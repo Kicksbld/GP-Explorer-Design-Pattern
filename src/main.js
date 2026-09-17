@@ -198,11 +198,29 @@ function restaurerEtat(engine, weekend, etat) {
   });
 }
 
+// Le pilote vedette de la grille passe par le Builder plutôt que par la seule
+// Factory : ça illustre la customisation pas-à-pas (stat + bonus décorateur)
+// sans changer la construction des 23 autres pilotes.
+function construirePiloteVedette(data) {
+  return new PiloteBuilder()
+    .avecIdentite(data.id, data.pseudo, data.numero)
+    .avecClasse(data.classe)
+    .avecEcurie(data.ecurie)
+    .avecImage(data.image)
+    .avecTechnique(data.technique)
+    .avecStat('controle', 6)
+    .avecBonusVitesse(1)
+    .build();
+}
+
 async function main() {
   const db = PiloteDatabase.getInstance();
   await db.load();
 
-  const pilotes = db.getPilotes().map((data) => PiloteFactory.create(data));
+  const donneesPilotes = db.getPilotes();
+  const pilotes = donneesPilotes.map((data, index) => (
+    index === 0 ? construirePiloteVedette(data) : PiloteFactory.create(data)
+  ));
 
   const engine = new RaceEngine(pilotes);
   engine.classement.subscribe(new Spectator('Tribune Principale'));

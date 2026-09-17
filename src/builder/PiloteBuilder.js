@@ -26,6 +26,11 @@ export class PiloteBuilder {
     return this;
   }
 
+  avecImage(image) {
+    this.#data.image = image;
+    return this;
+  }
+
   avecTechnique(technique) {
     this.#data.technique = technique;
     return this;
