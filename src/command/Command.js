@@ -8,4 +8,9 @@ export class Command {
   undo() {
     throw new Error('undo() non implémenté');
   }
+
+  // Libellé affiché dans l'historique des commandes (UI) — chaque sous-classe le précise.
+  get label() {
+    return 'Commande';
+  }
 }

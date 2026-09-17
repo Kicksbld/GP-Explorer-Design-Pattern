@@ -1,5 +1,7 @@
 import { Command } from '../Command.js';
 
+const BONUS_VITESSE = 2;
+
 export class AccelererCommand extends Command {
   constructor(pilote) {
     super();
@@ -7,10 +9,14 @@ export class AccelererCommand extends Command {
   }
 
   execute() {
-    // TODO
+    this.pilote.stats.vitesse += BONUS_VITESSE;
   }
 
   undo() {
-    // TODO
+    this.pilote.stats.vitesse -= BONUS_VITESSE;
+  }
+
+  get label() {
+    return 'Accélérer';
   }
 }

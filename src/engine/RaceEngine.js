@@ -20,7 +20,14 @@ export class RaceEngine {
   }
 
   executer(command) {
+    command.tour = this.tour;
     this.invoker.executer(command);
+    this.#publierClassement();
+  }
+
+  annulerDerniere() {
+    this.invoker.annulerDerniere();
+    this.#publierClassement();
   }
 
   // Déclenche la technique d'un pilote. Si l'effet renvoie un pilote décoré

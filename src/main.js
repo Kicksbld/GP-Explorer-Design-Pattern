@@ -4,6 +4,9 @@ import { PiloteBuilder } from './builder/PiloteBuilder.js';
 import { Spectator } from './observer/Spectator.js';
 import { RaceEngine } from './engine/RaceEngine.js';
 import { RaceWeekend, PHASES } from './engine/RaceWeekend.js';
+import { AccelererCommand } from './command/commands/AccelererCommand.js';
+import { DepasserCommand } from './command/commands/DepasserCommand.js';
+import { UtiliserTechniqueCommand } from './command/commands/UtiliserTechniqueCommand.js';
 
 const LIBELLES_PHASE = {
   [PHASES.ESSAIS]: 'Essais',
@@ -40,6 +43,21 @@ function mettreAJourPhaseStepper(phase) {
   }));
 }
 
+function mettreAJourHistorique(engine) {
+  const liste = document.querySelector('.command-history__list');
+  if (!liste) return;
+
+  const entrees = engine.invoker.historique.slice().reverse();
+  liste.replaceChildren(...entrees.map((command) => {
+    const li = document.createElement('li');
+    const temps = document.createElement('span');
+    temps.className = 'command-history__time';
+    temps.textContent = `T.${command.tour ?? engine.tour}`;
+    li.append(temps, command.label);
+    return li;
+  }));
+}
+
 async function main() {
   const db = PiloteDatabase.getInstance();
   await db.load();
@@ -53,6 +71,7 @@ async function main() {
 
   engine.tourSuivant();
   mettreAJourPhaseStepper(weekend.phase);
+  mettreAJourHistorique(engine);
 
   document.querySelector('[data-action="tour-suivant"]')?.addEventListener('click', () => {
     engine.tourSuivant();
@@ -68,8 +87,37 @@ async function main() {
       const pilote = engine.pilotes.find((p) => p.id === bouton.dataset.piloteId);
       const cible = engine.pilotes.find((p) => p.id === bouton.dataset.cibleId);
       if (pilote) {
-        engine.executerTechnique(pilote, cible);
+        engine.executer(new UtiliserTechniqueCommand(engine, pilote, cible));
+        mettreAJourHistorique(engine);
       }
+    });
+  });
+
+  document.querySelectorAll('[data-action="accelerer"]').forEach((bouton) => {
+    bouton.addEventListener('click', () => {
+      const pilote = engine.pilotes.find((p) => p.id === bouton.dataset.piloteId);
+      if (pilote) {
+        engine.executer(new AccelererCommand(pilote));
+        mettreAJourHistorique(engine);
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-action="depasser"]').forEach((bouton) => {
+    bouton.addEventListener('click', () => {
+      const pilote = engine.pilotes.find((p) => p.id === bouton.dataset.piloteId);
+      const cible = engine.pilotes.find((p) => p.id === bouton.dataset.cibleId);
+      if (pilote) {
+        engine.executer(new DepasserCommand(pilote, cible));
+        mettreAJourHistorique(engine);
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-action="annuler"]').forEach((bouton) => {
+    bouton.addEventListener('click', () => {
+      engine.annulerDerniere();
+      mettreAJourHistorique(engine);
     });
   });
 }

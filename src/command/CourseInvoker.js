@@ -12,4 +12,8 @@ export class CourseInvoker {
     const command = this.#historique.pop();
     command?.undo();
   }
+
+  get historique() {
+    return [...this.#historique];
+  }
 }
