@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GP Explorer — Salle de contrôle</title>
+  <meta name="description" content="Dashboard de simulation de course GP Explorer : classement live, fiche pilote, écuries et journal de course." />
+  <link rel="stylesheet" href="./design-system/dashboard.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Aller au contenu</a>
+
+  <header class="control-header">
+    <div class="control-header__brand">
+      <span class="control-header__brand-mark">GP Explorer</span>
+      <span class="control-header__brand-sub">Salle de contrôle</span>
+    </div>
+
+    <ol class="phase-stepper" aria-label="Phase du week-end de course">
+      <li class="phase-stepper__item phase-stepper__item--done">
+        <span class="phase-stepper__dot" aria-hidden="true"></span>
+        Essais
+      </li>
+      <li class="phase-stepper__item" aria-current="step">
+        <span class="phase-stepper__dot" aria-hidden="true"></span>
+        Qualifs
+      </li>
+      <li class="phase-stepper__item">
+        <span class="phase-stepper__dot" aria-hidden="true"></span>
+        Course
+      </li>
+    </ol>
+
+    <div class="control-toolbar">
+      <button type="button" class="btn btn--primary btn--sm" data-action="tour-suivant">Tour suivant</button>
+      <button type="button" class="btn btn--secondary btn--sm" data-action="pause">Pause</button>
+      <button type="button" class="btn btn--secondary btn--sm" data-action="sauvegarder">Sauvegarder</button>
+      <button type="button" class="btn btn--secondary btn--sm" data-action="restaurer">Restaurer</button>
+    </div>
+  </header>
+
+  <main id="main" class="control-layout">
+    <!-- Classement live — Observer -->
+    <section class="panel panel--classement card" aria-labelledby="classement-title">
+      <h2 class="panel__title" id="classement-title">Classement live</h2>
+      <ol class="classement-list" aria-live="polite" aria-label="Classement des pilotes en course">
+        <li class="classement-row" data-pilote-id="sch">
+          <span class="classement-row__pos">1</span>
+          <span class="classement-row__identity">
+            <span class="classement-row__numero">#19</span>
+            <span class="classement-row__pseudo">SCH</span>
+            <span class="classement-row__ecurie">Samsung</span>
+          </span>
+          <span class="state-badge state-badge--fatigue">Fatigué</span>
+        </li>
+        <li class="classement-row" data-pilote-id="squeezie">
+          <span class="classement-row__pos">2</span>
+          <span class="classement-row__identity">
+            <span class="classement-row__numero">#14</span>
+            <span class="classement-row__pseudo">Squeezie</span>
+            <span class="classement-row__ecurie">Netflix</span>
+          </span>
+          <span class="state-badge state-badge--normal">Normal</span>
+        </li>
+        <li class="classement-row" data-pilote-id="karchez">
+          <span class="classement-row__pos">3</span>
+          <span class="classement-row__identity">
+            <span class="classement-row__numero">#21</span>
+            <span class="classement-row__pseudo">Karchez</span>
+            <span class="classement-row__ecurie">CUPRA</span>
+          </span>
+          <span class="state-badge state-badge--normal">Normal</span>
+        </li>
+        <li class="classement-row" data-pilote-id="ander">
+          <span class="classement-row__pos">4</span>
+          <span class="classement-row__identity">
+            <span class="classement-row__numero">#17</span>
+            <span class="classement-row__pseudo">Ander</span>
+            <span class="classement-row__ecurie">CUPRA</span>
+          </span>
+          <span class="state-badge state-badge--perte-attention">Perte Attention</span>
+        </li>
+        <li class="classement-row" data-pilote-id="billy">
+          <span class="classement-row__pos">5</span>
+          <span class="classement-row__identity">
+            <span class="classement-row__numero">#99</span>
+            <span class="classement-row__pseudo">Billy</span>
+            <span class="classement-row__ecurie">Samsung</span>
+          </span>
+          <span class="state-badge state-badge--fatigue">Fatigué</span>
+        </li>
+        <li class="classement-row" data-pilote-id="amine">
+          <span class="classement-row__pos">6</span>
+          <span class="classement-row__identity">
+            <span class="classement-row__numero">#10</span>
+            <span class="classement-row__pseudo">Amine</span>
+            <span class="classement-row__ecurie">Netflix</span>
+          </span>
+          <span class="state-badge state-badge--normal">Normal</span>
+        </li>
+        <li class="classement-row" data-pilote-id="maghla">
+          <span class="classement-row__pos">7</span>
+          <span class="classement-row__identity">
+            <span class="classement-row__numero">#31</span>
+            <span class="classement-row__pseudo">Maghla</span>
+            <span class="classement-row__ecurie">Sol de Janeiro</span>
+          </span>
+          <span class="state-badge state-badge--epuise">Épuisé</span>
+        </li>
+        <li class="classement-row" data-pilote-id="ludwig">
+          <span class="classement-row__pos">8</span>
+          <span class="classement-row__identity">
+            <span class="classement-row__numero">#42</span>
+            <span class="classement-row__pseudo">Ludwig</span>
+            <span class="classement-row__ecurie">The Crew Motorfest</span>
+          </span>
+          <span class="state-badge state-badge--normal">Normal</span>
+        </li>
+      </ol>
+    </section>
+
+    <!-- Pilote sélectionné — Decorator + Command -->
+    <section class="panel panel--pilote card" aria-labelledby="pilote-title">
+      <h2 class="panel__title" id="pilote-title">Pilote sélectionné</h2>
+
+      <div class="pilote-flip" tabindex="0" aria-label="Fiche de SCH — survoler ou activer pour voir la technique">
+        <div class="pilote-flip__inner">
+          <div class="pilote-flip__face pilote-flip__face--front">
+            <div class="pilote-flip__figure">
+              <span class="pilote-flip__initial" aria-hidden="true">S</span>
+            </div>
+            <div class="pilote-flip__identity">
+              <p class="pilote-flip__pseudo">SCH · #19</p>
+              <p class="pilote-flip__meta">Écurie Samsung · Rappeur</p>
+            </div>
+            <p class="pilote-flip__hint">Survoler pour voir la technique →</p>
+          </div>
+
+          <div class="pilote-flip__face pilote-flip__face--back">
+            <p class="pilote-flip__technique-nom">C'est Ciao</p>
+            <p class="pilote-flip__technique-desc">
+              Signature de SCH : il lâche la phrase culte et disparaît du rétroviseur adverse sans prévenir.
+            </p>
+            <p class="pilote-flip__technique-effet">
+              Effet : double instantanément l'adversaire ciblé et le fait passer en état
+              <strong>Perte Attention</strong> pendant 1 tour.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <ul class="tag-list" aria-label="Bonus et malus actifs">
+        <li class="tag tag--bonus">Bonus vitesse +2</li>
+        <li class="tag tag--malus">Malus maniabilité</li>
+      </ul>
+
+      <div class="pilote-actions">
+        <button type="button" class="btn btn--primary btn--sm" data-action="accelerer" data-pilote-id="sch">Accélérer</button>
+        <button type="button" class="btn btn--secondary btn--sm" data-action="depasser" data-pilote-id="sch">Dépasser</button>
+        <button type="button" class="btn btn--secondary btn--sm" data-action="technique" data-pilote-id="sch">Utiliser la technique</button>
+      </div>
+    </section>
+
+    <!-- Écuries — Composite -->
+    <section class="panel panel--ecuries card" aria-labelledby="ecuries-title">
+      <h2 class="panel__title" id="ecuries-title">Écuries</h2>
+      <ul class="ecurie-list">
+        <li class="ecurie-row" data-ecurie-id="samsung">
+          <span class="ecurie-row__nom">Samsung</span>
+          <ul class="ecurie-row__pilotes">
+            <li>SCH</li>
+            <li>Billy</li>
+          </ul>
+          <span class="ecurie-row__stat">Vmoy 8.2</span>
+        </li>
+        <li class="ecurie-row" data-ecurie-id="netflix">
+          <span class="ecurie-row__nom">Netflix</span>
+          <ul class="ecurie-row__pilotes">
+            <li>Squeezie</li>
+            <li>Amine</li>
+          </ul>
+          <span class="ecurie-row__stat">Vmoy 9.1</span>
+        </li>
+        <li class="ecurie-row" data-ecurie-id="cupra">
+          <span class="ecurie-row__nom">CUPRA</span>
+          <ul class="ecurie-row__pilotes">
+            <li>Ander</li>
+            <li>Karchez</li>
+          </ul>
+          <span class="ecurie-row__stat">Vmoy 8.7</span>
+        </li>
+        <li class="ecurie-row" data-ecurie-id="alpine">
+          <span class="ecurie-row__nom">Alpine</span>
+          <ul class="ecurie-row__pilotes">
+            <li>Ana</li>
+            <li>Kaatsup</li>
+          </ul>
+          <span class="ecurie-row__stat">Vmoy 7.6</span>
+        </li>
+        <li class="ecurie-row" data-ecurie-id="subway">
+          <span class="ecurie-row__nom">Subway</span>
+          <ul class="ecurie-row__pilotes">
+            <li>MisterV</li>
+            <li>PLK</li>
+          </ul>
+          <span class="ecurie-row__stat">Vmoy 7.9</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Journal / spectateurs — Observer -->
+    <section class="panel panel--journal card" aria-labelledby="journal-title">
+      <h2 class="panel__title" id="journal-title">Journal de course</h2>
+      <ul class="journal-feed" aria-live="polite" aria-label="Événements de course en direct">
+        <li class="journal-entry journal-entry--action">
+          <span class="journal-entry__time">T.12</span>
+          <span>SCH double Squeezie avec « C'est Ciao » !</span>
+        </li>
+        <li class="journal-entry journal-entry--warning">
+          <span class="journal-entry__time">T.12</span>
+          <span>Karchez inflige Perte Attention à tous les pilotes proches.</span>
+        </li>
+        <li class="journal-entry journal-entry--boost">
+          <span class="journal-entry__time">T.11</span>
+          <span>Squeezie active « Keep Pushing » : retour à l'état Normal.</span>
+        </li>
+        <li class="journal-entry journal-entry--save">
+          <span class="journal-entry__time">T.10</span>
+          <span>Course sauvegardée (checkpoint).</span>
+        </li>
+        <li class="journal-entry journal-entry--warning">
+          <span class="journal-entry__time">T.9</span>
+          <span>Billy passe en état Fatigué après « Mode Deter ».</span>
+        </li>
+        <li class="journal-entry journal-entry--action">
+          <span class="journal-entry__time">T.8</span>
+          <span>Ander enchaîne un « Olé Drift » en sortie de virage.</span>
+        </li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>

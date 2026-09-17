@@ -1,0 +1,147 @@
+/* ==========================================================================
+   GP Explorer — Design Tokens
+   Source: gp-explorer.fr, extracted via Firecrawl (see ../DESIGN.md)
+   Values marked "inferred" are not directly observed on the source site
+   and were added to fill gaps (status colors, focus states, elevation).
+   ========================================================================== */
+
+:root {
+  /* ---------- Brand colors ---------- */
+  --color-primary: #E50914;                 /* sourced: driver-frame gradient */
+  --color-primary-dark: #B20710;             /* sourced: driver-frame gradient */
+  --color-primary-gradient: linear-gradient(45deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+  --color-secondary: #DD2B03;                /* sourced: "red-400", footer band / icon hover */
+
+  /* ---------- Neutrals ---------- */
+  --color-neutral-0: #FFFFFF;                /* sourced */
+  --color-neutral-50: #F4F4F4;               /* inferred (interpolated) */
+  --color-neutral-100: #E1E1E1;              /* sourced: page background */
+  --color-neutral-200: #C9C9C9;              /* inferred (interpolated) */
+  --color-neutral-400: #9B9A9A;              /* sourced: "gray-400", placeholders */
+  --color-neutral-700: #4A4A4A;              /* inferred (interpolated) */
+  --color-neutral-900: #222222;              /* sourced: "gray-900", ink/text */
+
+  /* ---------- Status colors ---------- */
+  --color-success: #1F8A3B;                  /* inferred — no green present on source */
+  --color-warning: #FACC15;                  /* sourced: "yellow-400", defined but unused on homepage */
+  --color-danger:  #DD2B03;                  /* sourced: same as --color-secondary */
+  --color-info:    #0004F4;                  /* sourced: "blue-400", form-select caret / icon hover */
+
+  /* ---------- State pattern colors (Pilote states) ----------
+     Inferred additions — not present on the source site, designed to
+     stay within the brand's flat/high-contrast palette. Reuses
+     --color-success/--color-danger where the semantics already match. */
+  --color-state-normal: var(--color-success);        /* Normal */
+  --color-state-perte-attention: #6D28D9;             /* Perte Attention — inferred violet */
+  --color-state-fatigue: #F97316;                     /* Fatigué — inferred orange */
+  --color-state-epuise: var(--color-danger);          /* Épuisé */
+
+  /* ---------- Backgrounds / surfaces ---------- */
+  --color-bg: var(--color-neutral-100);
+  --color-surface: var(--color-neutral-0);
+  --color-surface-inverted: var(--color-neutral-900);
+
+  /* ---------- Text ---------- */
+  --color-text-primary: var(--color-neutral-900);
+  --color-text-inverted: var(--color-neutral-0);
+  --color-text-muted: var(--color-neutral-400);
+  --color-text-link: var(--color-primary);
+
+  /* ---------- Typography: families ---------- */
+  --font-display: "LateralVariable", "Archivo Expanded", "Oswald", sans-serif; /* fallback chain: compressed/condensed grotesk */
+  --font-body: "LateralVariable", "Archivo Expanded", "Oswald", sans-serif;
+  --font-number: "Blutter", "Archivo Expanded", sans-serif;
+
+  /* ---------- Typography: weights ---------- */
+  --fw-regular: 400;
+  --fw-bold: 700;
+  --fw-black: 800;
+
+  /* ---------- Typography: scale ----------
+     Headings use clamp() to interpolate fluidly between the exact
+     breakpoint values captured from the source stylesheet
+     (s: 768px and l: 1280px), instead of jumping in hard steps. */
+  --fs-body: 1rem;        /* 16px, sourced */
+  --lh-body: 1.5;
+
+  --fs-h5: 0.875rem;      /* sourced */
+  --lh-h5: 1.25rem;       /* sourced */
+  --fw-h5: var(--fw-black);
+
+  --fs-h4: clamp(1.25rem, 1rem + 1vw, 1.5rem);     /* sourced: 1.25rem → 1.5rem */
+  --lh-h4: 1.35;                                    /* sourced */
+  --fw-h4: var(--fw-black);
+
+  --fs-h3: clamp(3rem, 1.2rem + 6vw, 5rem);         /* sourced: 3rem → 4.35rem → 5rem */
+  --lh-h3: 1.05;                                    /* sourced */
+  --fw-h3: var(--fw-black);
+
+  --fs-h2: clamp(3.5rem, 0.5rem + 12vw, 8.75rem);   /* sourced: 3.5rem → 6.25rem → 8.75rem */
+  --lh-h2: 1.05;                                    /* sourced */
+  --fw-h2: var(--fw-black);
+
+  --fs-h1: clamp(4rem, 0.5rem + 18vw, 12.5rem);     /* sourced: 12rem @768 → 12.5rem @1280 */
+  --lh-h1: 1;                                       /* sourced */
+  --fw-h1: var(--fw-black);
+
+  /* ---------- Spacing (4px base unit, sourced) ---------- */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-24: 6rem;     /* 96px */
+  --space-32: 8rem;     /* 128px */
+
+  /* ---------- Radius ----------
+     Brand rule: the entire UI is hard-edged. Every radius token
+     resolves to 0 on purpose — do not round corners. */
+  --radius-none: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-full: 9999px;  /* reserved, unused on source */
+
+  /* ---------- Elevation ----------
+     No box-shadow exists anywhere in the source CSS — depth is
+     conveyed with flat color blocks and borders instead. This scale
+     is an inferred addition for overlays (modals, dropdowns) only. */
+  --shadow-none: none;
+  --shadow-sm: 0 1px 2px rgba(34, 34, 34, 0.08);
+  --shadow-md: 0 4px 12px rgba(34, 34, 34, 0.12);
+  --shadow-lg: 0 12px 32px rgba(34, 34, 34, 0.18);
+
+  /* ---------- Motion (sourced eases) ---------- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-circ: cubic-bezier(0.85, 0, 0.15, 1);
+  --duration-fast: 300ms;
+  --duration-base: 500ms;
+  --duration-slow: 700ms;
+
+  /* ---------- Layout / breakpoints (sourced, custom scale) ----------
+     Note: names don't match default Tailwind semantics.
+     s: 768px, m: 1024px, l: 1280px, xl: 1440px, xxl: 1920px */
+  --breakpoint-s: 768px;
+  --breakpoint-m: 1024px;
+  --breakpoint-l: 1280px;
+  --breakpoint-xl: 1440px;
+  --breakpoint-xxl: 1920px;
+
+  --container-s: 768px;
+  --container-m: 1024px;
+  --container-l: 1280px;
+  --container-xl: 1440px;
+  --container-xxl: 1920px;
+  --container-fixed-l: 1640px; /* fixed max-width used from l: upward, sourced */
+
+  --gutter: var(--space-2);
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --gutter: var(--space-4); /* sourced: grid gutter grows at l: */
+  }
+}

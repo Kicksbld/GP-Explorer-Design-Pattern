@@ -1,0 +1,249 @@
+/* ==========================================================================
+   GP Explorer — Component Library
+   Consumes tokens from ./variables.css — import that file first.
+   States marked "inferred" (disabled, focus, error) are not present in
+   the scraped source and were designed to stay consistent with the
+   brand's flat, hard-edged, high-contrast language.
+   ========================================================================== */
+
+@import "./variables.css";
+
+/* ==========================================================================
+   Buttons
+   Sourced: flat rectangle, uppercase, italic, bold, diagonal wipe on hover.
+   ========================================================================== */
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  overflow: hidden;
+  cursor: pointer;
+  padding: var(--space-3) var(--space-4);
+  border: none;
+  border-radius: var(--radius-none);
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-style: italic;
+  font-weight: var(--fw-bold);
+  line-height: 1;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out-expo);
+}
+
+@media (min-width: 1280px) {
+  .btn {
+    font-size: 2.5rem;
+  }
+}
+
+/* Diagonal wipe fill shared by all variants (sourced pattern) */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transform: skewX(-20deg) translate3d(-110%, 0, 0);
+  transition: transform var(--duration-slow) var(--ease-out-expo);
+}
+
+.btn:hover::before,
+.btn:focus-visible::before {
+  transform: skewX(-20deg) translate3d(0, 0, 0);
+}
+
+/* Primary — dark base, red wipe on interaction (sourced) */
+.btn--primary {
+  background-color: var(--color-text-primary);
+  color: var(--color-text-inverted);
+}
+.btn--primary::before {
+  background: var(--color-primary);
+}
+
+/* Secondary — white base, dark wipe on interaction (sourced) */
+.btn--secondary {
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  box-shadow: inset 0 0 0 1px var(--color-text-primary);
+}
+.btn--secondary::before {
+  background: var(--color-text-primary);
+}
+.btn--secondary:hover,
+.btn--secondary:focus-visible {
+  color: var(--color-text-inverted);
+}
+
+/* Focus ring — accessibility addition, inferred (not present on source) */
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Disabled — inferred, not present on source */
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.4;
+  pointer-events: none;
+}
+.btn:disabled::before {
+  display: none;
+}
+
+/* ==========================================================================
+   Inputs
+   Sourced: flat, 0-radius, thin border, muted placeholder color.
+   Focus / error states are inferred additions.
+   ========================================================================== */
+
+.field {
+  margin-bottom: var(--space-6); /* sourced: .form-item */
+  display: block;
+}
+
+.field__label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--fs-h5);
+  font-weight: var(--fw-h5);
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+}
+
+.input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: var(--radius-none);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  transition: border-color var(--duration-fast) var(--ease-out-expo),
+    box-shadow var(--duration-fast) var(--ease-out-expo);
+}
+
+.input::placeholder {
+  color: var(--color-text-muted); /* sourced: #9B9A9A */
+}
+
+/* Focus — inferred, WCAG-compliant visible ring */
+.input:focus {
+  outline: none;
+  border-color: var(--color-text-primary);
+  box-shadow: 0 0 0 2px var(--color-text-primary);
+}
+
+/* Disabled — inferred */
+.input:disabled {
+  background: var(--color-neutral-50);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
+/* Error — inferred, uses the sourced danger/flat-red token */
+.field--error .input,
+.input--error {
+  border-color: var(--color-danger);
+}
+.field--error .input:focus,
+.input--error:focus {
+  box-shadow: 0 0 0 2px var(--color-danger);
+}
+.field__error {
+  display: block;
+  margin-top: var(--space-1);
+  color: var(--color-danger);
+  font-size: 0.875rem;
+}
+
+/* Select caret — sourced: theme's --blue-400 triangle */
+.select {
+  position: relative;
+}
+.select::after {
+  content: "";
+  position: absolute;
+  right: var(--space-3);
+  bottom: 0.25rem;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-bottom: 6px solid var(--color-info);
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Cards
+   Sourced: flat surface, thin border instead of shadow, no radius.
+   Elevation utility is inferred (for overlays only — not brand-default).
+   ========================================================================== */
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: var(--radius-none);
+  box-shadow: var(--shadow-none);
+  overflow: hidden;
+}
+
+/* Inferred utility — the brand default has NO shadow; use only for
+   overlay surfaces (modals, popovers) that must float above content. */
+.card--elevated {
+  box-shadow: var(--shadow-md);
+}
+
+.card__body {
+  padding: var(--space-4);
+}
+
+/* Driver / team card — sourced pattern: gradient frame + hover flip */
+.card--pilote {
+  perspective: 1000px;
+  border: none;
+}
+
+.card--pilote .card__inner {
+  position: relative;
+  transition: transform var(--duration-slow) var(--ease-in-out-circ);
+  transform-style: preserve-3d;
+}
+
+.card--pilote:hover .card__inner {
+  transform: rotateY(180deg);
+}
+
+.card--pilote .card__figure {
+  aspect-ratio: 1 / 1;
+  background: var(--color-primary-gradient); /* sourced */
+}
+
+.card--pilote .card__figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.card--pilote .card__name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* sourced opacity */
+  font-family: var(--font-display);
+  font-size: var(--fs-h5);
+  font-weight: var(--fw-h5);
+  text-transform: uppercase;
+  transition: transform var(--duration-base) var(--ease-out-expo);
+}
+
+.card--pilote:hover .card__name {
+  transform: translateX(var(--space-2)); /* sourced: group-hover:translate-x-2 */
+}
