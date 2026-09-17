@@ -1,0 +1,370 @@
+/* ==========================================================================
+   GP Explorer — Scénario du week-end
+   Écran d'accueil, overlay de résultats / podium et états dynamiques du
+   dashboard. Chargé après dashboard.css : mêmes tokens, rayon 0, voix
+   display compressée, ombres réservées aux overlays.
+   ========================================================================== */
+
+[hidden] { display: none !important; }
+
+/* Voix display partagée par les nouveaux titres */
+.accueil__title, .accueil__section-title, .accueil__etape-nom, .carte-pilote__pseudo,
+.carte-pilote__numero, .reglage__nom, .resultats__title, .resultats__position,
+.resultats__pseudo, .resultats__numero {
+  font-family: var(--font-display);
+  font-stretch: var(--stretch-compressed);
+  font-style: italic;
+  font-weight: var(--fw-black);
+  text-transform: uppercase;
+  line-height: 0.9;
+  word-spacing: 0.12em;
+}
+
+/* Voix chrono partagée */
+.accueil__etape-tours, .accueil__etape-index, .carte-pilote__stats,
+.resultats__temps, .duel-card__ecart {
+  font-family: var(--font-number);
+  font-stretch: var(--stretch-extended);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   Accueil
+   ========================================================================== */
+
+.accueil {
+  min-height: 100vh;
+  border-bottom: 4px solid var(--color-primary);
+}
+
+.accueil__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  max-width: var(--container-fixed-l);
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-4) 0;
+}
+
+@media (min-width: 1280px) {
+  .accueil__inner { padding: var(--space-16) var(--space-12) 0; gap: var(--space-12); }
+}
+
+.accueil__hero { display: flex; flex-direction: column; gap: var(--space-4); }
+.accueil__kicker { font-size: var(--fs-small); font-weight: var(--fw-medium); letter-spacing: 0.08em; text-transform: uppercase; color: var(--tile-muted); }
+.accueil__title { font-size: clamp(3.5rem, 1rem + 9vw, 8.75rem); line-height: 0.82; padding-right: 0.1em; }
+.accueil__title span { display: block; color: var(--color-primary); }
+.accueil__intro { max-width: 44rem; font-size: 1.125rem; color: var(--tile-muted); }
+
+.accueil__etapes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--bento-gap);
+}
+
+.accueil__etape {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  box-shadow: inset 0 0 0 1px var(--tile-line), inset 0 3px 0 var(--color-primary);
+}
+
+.accueil__etape-head { display: flex; align-items: baseline; gap: var(--space-3); }
+.accueil__etape-index { font-size: var(--fs-caption); color: var(--tile-muted); }
+.accueil__etape-nom { font-size: 1.75rem; }
+.accueil__etape-tours { margin-left: auto; font-size: var(--fs-small); color: var(--color-primary); white-space: nowrap; }
+.accueil__etape-desc { font-size: var(--fs-small); color: var(--tile-muted); }
+
+.accueil__bloc { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+.accueil__section-title { font-size: 2.25rem; }
+
+.accueil__pilotes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  gap: var(--bento-gap);
+}
+
+@media (min-width: 1024px) {
+  .accueil__pilotes { grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr)); }
+}
+
+/* Carte pilote — portrait sur le dégradé rouge (sourced) */
+.carte-pilote {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  aspect-ratio: 4 / 5;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-none);
+  background: var(--color-primary-gradient);
+  color: var(--color-text-inverted);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.carte-pilote__numero {
+  position: absolute;
+  top: 0.04em;
+  right: 0.08em;
+  z-index: -1;
+  font-size: 4.5rem;
+  line-height: 0.8;
+  color: rgba(255, 255, 255, 0.14);
+}
+
+.carte-pilote__portrait {
+  position: absolute;
+  inset: 8% 0 0;
+  z-index: -1;
+  width: 100%;
+  height: 92%;
+  object-fit: cover;
+  object-position: 50% 0;
+  transition: transform var(--duration-base) var(--ease-out-expo);
+}
+
+.carte-pilote:hover .carte-pilote__portrait { transform: scale(1.05); }
+
+.carte-pilote__band {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-glass-red);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(14px) saturate(1.2);
+}
+
+.carte-pilote__pseudo { font-size: 1.375rem; transition: transform var(--duration-base) var(--ease-out-expo); }
+.carte-pilote:hover .carte-pilote__pseudo { transform: translateX(var(--space-1)); }
+.carte-pilote__meta { font-size: var(--fs-caption); color: rgba(255, 255, 255, 0.85); }
+.carte-pilote__stats { font-size: 0.6875rem; color: rgba(255, 255, 255, 0.85); }
+
+.carte-pilote__choisi {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  padding: 0.1875rem 0.375rem;
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-bold);
+  background: var(--color-neutral-0);
+  color: var(--color-primary-dark);
+  transform: translateY(-160%);
+  transition: transform var(--duration-base) var(--ease-out-expo);
+}
+
+.carte-pilote[aria-pressed="true"] { box-shadow: inset 0 0 0 3px var(--color-neutral-0); }
+.carte-pilote[aria-pressed="true"] .carte-pilote__choisi { transform: none; }
+.carte-pilote:focus-visible { outline-offset: 3px; }
+
+/* Réglages — radios segmentées */
+.accueil__reglages { margin: 0; padding: 0; border: none; }
+.accueil__reglages legend { float: left; width: 100%; margin-bottom: var(--space-4); padding: 0; }
+.reglage-options { clear: both; display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: var(--bento-gap); }
+
+.reglage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px var(--color-neutral-700);
+  transition: background-color var(--duration-fast) var(--ease-out-expo);
+}
+
+.reglage input { position: absolute; opacity: 0; pointer-events: none; }
+.reglage__nom { font-size: 1.75rem; }
+.reglage__detail { font-size: var(--fs-small); color: var(--tile-muted); }
+.reglage:hover { background: var(--color-neutral-800); }
+.reglage:has(input:checked) { background: var(--color-neutral-800); box-shadow: inset 4px 0 0 var(--color-primary), inset 0 0 0 1px var(--color-neutral-400); }
+.reglage:has(input:focus-visible) { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+
+/* Barre de départ collée en bas, la grille des pilotes est longue */
+.accueil__depart {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-6);
+  margin: 0 calc(-1 * var(--space-4));
+  padding: var(--space-4);
+  background: var(--color-surface-inverted);
+  box-shadow: inset 0 1px 0 var(--color-neutral-800);
+}
+
+@media (min-width: 1280px) {
+  .accueil__depart { margin: 0 calc(-1 * var(--space-12)); padding: var(--space-4) var(--space-12); }
+}
+
+.accueil__choix { font-size: var(--fs-small); color: var(--tile-muted); }
+
+/* ==========================================================================
+   Dashboard — états dynamiques
+   ========================================================================== */
+
+.brand { margin: 0; }
+
+.live-flag--off .live-flag__dot { animation: none; background: var(--color-neutral-400); }
+
+.pilote-alert--perte-attention { box-shadow: inset 3px 0 0 var(--state-perte-attention); }
+.pilote-alert--fatigue { box-shadow: inset 3px 0 0 var(--state-fatigue); }
+.pilote-alert--epuise { box-shadow: inset 3px 0 0 var(--state-epuise); }
+
+.technique__cible { font-size: var(--fs-caption); color: var(--tile-muted); }
+
+.pilote-actions__note { grid-column: 1 / -1; font-size: var(--fs-caption); color: var(--tile-muted); }
+
+.vide { padding: 0.375rem 0; font-size: var(--fs-small); color: var(--tile-muted); }
+
+.duel-card__ecart { font-size: var(--fs-caption); color: var(--tile-muted); }
+
+/* Une seule carte quand personne n'est chronométré autour du pilote suivi */
+.duel:has(> .duel-card:only-of-type) { grid-template-columns: minmax(0, 1fr); }
+.duel:has(> .duel-card:only-of-type) .duel-card { aspect-ratio: 10 / 7; }
+
+/* Classement : la ligne entière sert de bouton de sélection */
+.classement-aide { margin-top: calc(-1 * var(--space-2)); font-size: var(--fs-caption); color: var(--tile-muted); }
+
+.classement-row { position: relative; }
+
+.classement-row__select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-none);
+  background: transparent;
+  cursor: pointer;
+  transition: box-shadow var(--duration-fast) var(--ease-out-expo);
+}
+
+.classement-row__select:hover { box-shadow: inset 3px 0 0 var(--color-primary); }
+.classement-row__select:focus-visible { outline-offset: -2px; }
+
+@media (min-width: 1280px) {
+  .classement-list { max-height: min(42rem, calc(100vh - 14rem)); }
+}
+
+.journal-entry--phase .journal-entry__type { color: var(--color-primary); font-weight: var(--fw-bold); }
+
+/* ==========================================================================
+   Résultats — top 3 de phase et podium final (overlay)
+   ========================================================================== */
+
+.resultats {
+  width: min(100% - 2rem, 58rem);
+  max-width: none;
+  max-height: calc(100% - 2rem);
+  margin: auto;
+  padding: var(--space-6) 0;
+  border: none;
+  background: transparent;
+  overflow-y: auto;
+}
+
+.resultats--final { width: min(100% - 2rem, 72rem); }
+
+.resultats::backdrop {
+  background: rgba(34, 34, 34, 0.9);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.resultats__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  text-align: center;
+}
+
+.resultats__kicker { font-size: var(--fs-small); font-weight: var(--fw-medium); letter-spacing: 0.08em; text-transform: uppercase; color: var(--tile-muted); }
+.resultats__title { font-size: clamp(3rem, 1rem + 6vw, 5.5rem); line-height: 0.82; padding-right: 0.1em; }
+.resultats--final .resultats__title { font-size: clamp(4rem, 1rem + 10vw, 9rem); color: var(--color-primary); }
+
+.resultats__podium {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-areas: "p2 p1 p3";
+  align-items: end;
+  gap: var(--bento-gap);
+  width: 100%;
+}
+
+.resultats__marche { display: flex; flex-direction: column; min-width: 0; animation: resultats-monte var(--duration-slow) var(--ease-out-expo) both; }
+.resultats__marche--1 { grid-area: p1; animation-delay: 450ms; }
+.resultats__marche--2 { grid-area: p2; animation-delay: 250ms; }
+.resultats__marche--3 { grid-area: p3; animation-delay: 50ms; }
+
+@keyframes resultats-monte {
+  from { opacity: 0; transform: translate3d(0, 2.5rem, 0); }
+}
+
+.resultats__portrait {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: var(--color-primary-gradient);
+}
+
+.resultats__numero {
+  position: absolute;
+  top: 0.04em;
+  right: 0.06em;
+  z-index: -1;
+  font-size: clamp(4rem, 2rem + 8vw, 9rem);
+  line-height: 0.8;
+  color: rgba(255, 255, 255, 0.14);
+}
+
+.resultats__portrait img {
+  position: absolute;
+  inset: 8% 0 0;
+  z-index: -1;
+  width: 100%;
+  height: 92%;
+  object-fit: cover;
+  object-position: 50% 0;
+}
+
+.resultats__socle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-2) var(--space-4);
+  background: var(--color-neutral-0);
+  color: var(--color-text-primary);
+}
+
+.resultats__marche--1 .resultats__socle { padding-bottom: var(--space-12); background: var(--color-primary); color: var(--color-text-inverted); }
+.resultats__marche--2 .resultats__socle { padding-bottom: var(--space-8); }
+
+.resultats__position { font-size: clamp(2.5rem, 1.5rem + 3vw, 4rem); line-height: 0.8; }
+.resultats__marche--1 .resultats__position { font-size: clamp(3.5rem, 2rem + 4vw, 5.5rem); }
+.resultats__pseudo { max-width: 100%; overflow-wrap: anywhere; font-size: clamp(1.125rem, 0.75rem + 1.5vw, 2rem); }
+.resultats__marche--1 .resultats__pseudo { font-size: clamp(1.375rem, 0.75rem + 2vw, 2.5rem); }
+.resultats__ecurie { font-size: var(--fs-caption); opacity: 0.8; }
+.resultats__temps { font-size: clamp(0.75rem, 0.6rem + 0.5vw, 1rem); }
+
+/* Le podium final grandit : portraits plus hauts, P1 surélevé */
+.resultats--final .resultats__marche--1 .resultats__portrait { aspect-ratio: 3 / 4; }
+
+.resultats__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2); }
+
+@media (max-width: 767px) {
+  .resultats .btn { font-size: 1.125rem; }
+}

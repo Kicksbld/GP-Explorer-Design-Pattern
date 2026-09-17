@@ -46,8 +46,9 @@ export class PiloteDecorator {
     this.pilote.setState(state);
   }
 
+  // renvoie le résultat : une technique de malus rend la cible décorée
   utiliserTechnique(cible) {
-    this.pilote.utiliserTechnique(cible);
+    return this.pilote.utiliserTechnique(cible);
   }
 
   getVitesse() {

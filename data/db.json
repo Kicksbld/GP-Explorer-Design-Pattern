@@ -105,10 +105,15 @@
       "ecurie": "netflix",
       "image": "data/images/Squeezie.png",
       "classe": "Youtubeur",
+      "stats": {
+        "vitesse": 6,
+        "controle": 6
+      },
       "technique": {
         "nom": "Keep Pushing",
         "description": "Le cri de ralliement qui a lancé le GP Explorer : Squeezie refuse d'abandonner, quelle que soit la position en course.",
-        "effet": "Retire l'état Fatigué ou Épuisé et repasse le pilote en état Normal ; petit boost de vitesse sur le tour suivant."
+        "cible": "soi",
+        "effet": "Retire l'état Perte Attention, Fatigué ou Épuisé (retour en Normal) et donne +1 en vitesse."
       }
     },
     {
@@ -118,10 +123,15 @@
       "ecurie": "netflix",
       "image": "data/images/AMINE.png",
       "classe": "Youtubeur",
+      "stats": {
+        "vitesse": 5,
+        "controle": 5
+      },
       "technique": {
         "nom": "Câlin Surprise",
         "description": "Amine désamorce la tension avec une blague ou une accolade inattendue en plein dépassement, déstabilisant l'adversaire.",
-        "effet": "Inflige l'état Perte Attention à l'adversaire ciblé pendant 1 tour."
+        "cible": "devant",
+        "effet": "Met le pilote juste devant en Perte Attention (vitesse ×0,3 pendant 1 tour), s'il est en état Normal."
       }
     },
     {
@@ -131,10 +141,15 @@
       "ecurie": "lego-racing-team",
       "image": "data/images/DJILSI.png",
       "classe": "Youtubeur",
+      "stats": {
+        "vitesse": 5,
+        "controle": 4
+      },
       "technique": {
         "nom": "Petit Pont Turbo",
         "description": "Fidèle à ses vidéos de foot freestyle, Djilsi passe entre deux rivaux comme s'il dribblait un défenseur.",
-        "effet": "Permet de doubler un adversaire directement devant sans risque de collision pendant 1 tour."
+        "cible": "soi",
+        "effet": "+2 en vitesse pour aller chercher le pilote juste devant."
       }
     },
     {
@@ -144,10 +159,15 @@
       "ecurie": "lego-racing-team",
       "image": "data/images/MAXBIAGGI.png",
       "classe": "Streameur",
+      "stats": {
+        "vitesse": 7,
+        "controle": 6
+      },
       "technique": {
         "nom": "Trajectoire Parfaite",
         "description": "Pilote professionnel avant tout, Maxime Biaggi trouve la ligne idéale que personne d'autre ne voit.",
-        "effet": "Réduit le temps au tour du pilote pendant 2 tours consécutifs."
+        "cible": "soi",
+        "effet": "+1 en vitesse."
       }
     },
     {
@@ -157,10 +177,15 @@
       "ecurie": "sol-de-janeiro",
       "image": "data/images/Magla.png",
       "classe": "Rappeur",
+      "stats": {
+        "vitesse": 5,
+        "controle": 6
+      },
       "technique": {
         "nom": "Freestyle Assassin",
         "description": "Maghla balance un couplet improvisé si tranchant que l'adversaire d'à côté en perd le fil de sa course.",
-        "effet": "Inflige l'état Perte Attention à l'adversaire le plus proche."
+        "cible": "proche",
+        "effet": "Met l'adversaire le plus proche au chrono en Perte Attention (vitesse ×0,3 pendant 1 tour), s'il est en état Normal."
       }
     },
     {
@@ -170,10 +195,15 @@
       "ecurie": "sol-de-janeiro",
       "image": "data/images/LEA.png",
       "classe": "Youtubeur",
+      "stats": {
+        "vitesse": 4,
+        "controle": 5
+      },
       "technique": {
         "nom": "Pas de Danse Hypnotique",
         "description": "Un mouvement chorégraphié au volant, digne de ses vidéos, qui capte tous les regards autour d'elle.",
-        "effet": "Inflige l'état Perte Attention à tous les adversaires dans un rayon proche pendant 1 tour."
+        "cible": "proche",
+        "effet": "Met l'adversaire le plus proche au chrono en Perte Attention (vitesse ×0,3 pendant 1 tour), s'il est en état Normal."
       }
     },
     {
@@ -183,10 +213,15 @@
       "ecurie": "andros-be-nuts",
       "image": "data/images/THEORDORT.png",
       "classe": "Youtubeur",
+      "stats": {
+        "vitesse": 5,
+        "controle": 4
+      },
       "technique": {
         "nom": "Sale Coup Fourré",
         "description": "Théodort sort une farce digne de ses vidéos de prank pour piéger discrètement un adversaire.",
-        "effet": "Ajoute un malus temporaire (équivalent Decorator) sur le véhicule adverse, sans que la victime ne le voie venir."
+        "cible": "devant",
+        "effet": "Vise le pilote juste devant. Pose un malus d'équipement (Decorator) : −1 en vitesse et en contrôle jusqu'aux réparations au garage, en fin de phase."
       }
     },
     {
@@ -196,10 +231,15 @@
       "ecurie": "andros-be-nuts",
       "image": "data/images/Mastu.png",
       "classe": "Streameur",
+      "stats": {
+        "vitesse": 5,
+        "controle": 5
+      },
       "technique": {
         "nom": "Cri de Guerre",
         "description": "Mastu hurle dans son micro comme en plein rage-quit IRL, un vacarme qui déconcentre les pilotes voisins.",
-        "effet": "Inflige l'état Fatigué aux adversaires proches pendant 1 tour."
+        "cible": "proche",
+        "effet": "Met l'adversaire le plus proche au chrono en état Fatigué (vitesse ×0,6, Épuisé après 3 tours), s'il est en état Normal."
       }
     },
     {
@@ -209,10 +249,15 @@
       "ecurie": "subway",
       "image": "data/images/MisterV.png",
       "classe": "Rappeur",
+      "stats": {
+        "vitesse": 5,
+        "controle": 7
+      },
       "technique": {
         "nom": "Ça Fait Plaisir",
         "description": "Calme et confiant, MisterV garde la tête froide même sous la pression et retrouve sa concentration.",
-        "effet": "Retire tout état négatif (Perte Attention, Fatigué) sur soi-même."
+        "cible": "soi",
+        "effet": "Retire l'état Perte Attention, Fatigué ou Épuisé : retour en état Normal."
       }
     },
     {
@@ -222,10 +267,15 @@
       "ecurie": "subway",
       "image": "data/images/PLK.png",
       "classe": "Rappeur",
+      "stats": {
+        "vitesse": 6,
+        "controle": 5
+      },
       "technique": {
         "nom": "Bendo Rush",
         "description": "Une accélération brute en ligne droite, aussi directe que ses refrains.",
-        "effet": "Boost de vitesse en ligne droite pendant 1 tour."
+        "cible": "soi",
+        "effet": "+1 en vitesse."
       }
     },
     {
@@ -235,10 +285,15 @@
       "ecurie": "samsung",
       "image": "data/images/SCH.png",
       "classe": "Rappeur",
+      "stats": {
+        "vitesse": 6,
+        "controle": 6
+      },
       "technique": {
         "nom": "C'est Ciao",
         "description": "Signature de SCH : il lâche la phrase culte et disparaît du rétroviseur adverse sans prévenir.",
-        "effet": "Le pilote double instantanément l'adversaire ciblé et le fait passer en état Perte Attention pendant 1 tour."
+        "cible": "devant",
+        "effet": "Met le pilote juste devant en Perte Attention (vitesse ×0,3 pendant 1 tour), s'il est en état Normal."
       }
     },
     {
@@ -248,10 +303,15 @@
       "ecurie": "samsung",
       "image": "data/images/Bili.png",
       "classe": "Streameur",
+      "stats": {
+        "vitesse": 6,
+        "controle": 4
+      },
       "technique": {
         "nom": "Mode Deter",
         "description": "Sous son pseudo RebeuDeter, Billy passe en mode rage totale et pousse le moteur dans le rouge.",
-        "effet": "Boost d'agressivité/vitesse important, mais augmente le risque de passer en état Fatigué au tour suivant."
+        "cible": "soi",
+        "effet": "+2 en vitesse, mais une chance sur deux de passer en état Fatigué."
       }
     },
     {
@@ -261,10 +321,15 @@
       "ecurie": "alpine",
       "image": "data/images/Ana.png",
       "classe": "Streameur",
+      "stats": {
+        "vitesse": 5,
+        "controle": 5
+      },
       "technique": {
         "nom": "Focus Radar",
         "description": "AnaOnAir garde un œil analytique sur toute la course, anticipant chaque mouvement adverse.",
-        "effet": "Révèle la position et le prochain mouvement des adversaires proches pendant 2 tours."
+        "cible": "soi",
+        "effet": "+2 en contrôle."
       }
     },
     {
@@ -274,10 +339,15 @@
       "ecurie": "alpine",
       "image": "data/images/Kaatsup.png",
       "classe": "Streameur",
+      "stats": {
+        "vitesse": 5,
+        "controle": 5
+      },
       "technique": {
         "nom": "Sauce Piquante",
         "description": "Kaatsup balance une remarque piquante en plein duel, de quoi faire perdre son sang-froid à n'importe qui.",
-        "effet": "Inflige l'état Perte Attention à l'adversaire directement derrière."
+        "cible": "derriere",
+        "effet": "Met le pilote juste derrière en Perte Attention (vitesse ×0,3 pendant 1 tour), s'il est en état Normal."
       }
     },
     {
@@ -287,10 +357,15 @@
       "ecurie": "lofi-girl-gentle-mates",
       "image": "data/images/GOTAGA.png",
       "classe": "Streameur",
+      "stats": {
+        "vitesse": 7,
+        "controle": 5
+      },
       "technique": {
         "nom": "Réflexes de Pro",
         "description": "Légende du FPS compétitif, Gotaga réagit avant même que le danger n'arrive.",
-        "effet": "Évite automatiquement la prochaine collision ou attaque subie."
+        "cible": "soi",
+        "effet": "Retire l'état Perte Attention, Fatigué ou Épuisé : retour en état Normal."
       }
     },
     {
@@ -300,10 +375,15 @@
       "ecurie": "lofi-girl-gentle-mates",
       "image": "data/images/NIKOF.png",
       "classe": "Streameur",
+      "stats": {
+        "vitesse": 6,
+        "controle": 5
+      },
       "technique": {
         "nom": "Build Instantané",
         "description": "Habitué à ériger des murs en pleine partie, Nikof improvise un raccourci défensif sur le circuit.",
-        "effet": "Crée un passage alternatif temporaire qui protège d'un adversaire poursuivant pendant 1 tour."
+        "cible": "derriere",
+        "effet": "Met le pilote juste derrière en Perte Attention (vitesse ×0,3 pendant 1 tour), s'il est en état Normal."
       }
     },
     {
@@ -313,10 +393,15 @@
       "ecurie": "erborian",
       "image": "data/images/BAGHERA.png",
       "classe": "Streameur",
+      "stats": {
+        "vitesse": 6,
+        "controle": 4
+      },
       "technique": {
         "nom": "Griffe Nocturne",
         "description": "BagheraJones se glisse discrètement dans l'angle mort adverse pour doubler sans se faire repérer.",
-        "effet": "Dépassement furtif : l'adversaire ne peut pas réagir pendant l'action."
+        "cible": "soi",
+        "effet": "+1 en vitesse et +1 en contrôle."
       }
     },
     {
@@ -326,10 +411,15 @@
       "ecurie": "erborian",
       "image": "data/images/Cocotte.png",
       "classe": "Streameur",
+      "stats": {
+        "vitesse": 5,
+        "controle": 5
+      },
       "technique": {
         "nom": "Tabarnak Turbo",
         "description": "Un juron bien québécois et une décharge d'adrénaline suffisent à Cocottee pour relancer sa course.",
-        "effet": "Boost de vitesse ponctuel, sort le pilote de l'état Fatigué."
+        "cible": "soi",
+        "effet": "Retire l'état Perte Attention, Fatigué ou Épuisé (retour en Normal) et donne +1 en vitesse."
       }
     },
     {
@@ -339,10 +429,15 @@
       "ecurie": "cupra",
       "image": "data/images/Ander.png",
       "classe": "Youtubeur",
+      "stats": {
+        "vitesse": 6,
+        "controle": 5
+      },
       "technique": {
         "nom": "Olé Drift",
         "description": "Ander Cortés enchaîne un drift spectaculaire à l'espagnole qui électrise le public.",
-        "effet": "Bonus de contrôle en virage et gain de popularité (impact sur le classement spectateurs si implémenté)."
+        "cible": "soi",
+        "effet": "+1 en contrôle."
       }
     },
     {
@@ -352,10 +447,15 @@
       "ecurie": "cupra",
       "image": "data/images/KARCHEZ.png",
       "classe": "Youtubeur",
+      "stats": {
+        "vitesse": 7,
+        "controle": 6
+      },
       "technique": {
         "nom": "Ombre du Boss",
         "description": "Dans l'univers GP Explorer, Karchez incarne le boss final que les écuries doivent affronter en alliance.",
-        "effet": "Aura d'intimidation : inflige l'état Perte Attention à tous les pilotes dans un rayon proche, en continu tant qu'il reste devant."
+        "cible": "derriere",
+        "effet": "Met le pilote juste derrière en Perte Attention (vitesse ×0,3 pendant 1 tour), s'il est en état Normal."
       }
     },
     {
@@ -365,10 +465,15 @@
       "ecurie": "the-crew-motorfest",
       "image": "data/images/Ludwig.png",
       "classe": "Streameur",
+      "stats": {
+        "vitesse": 6,
+        "controle": 4
+      },
       "technique": {
         "nom": "Subathon Infini",
         "description": "Roi du stream marathon, Ludwig tient la distance quand tous les autres s'écroulent.",
-        "effet": "Rend le pilote immunisé aux états Fatigué et Épuisé pendant 3 tours."
+        "cible": "soi",
+        "effet": "Retire l'état Perte Attention, Fatigué ou Épuisé (retour en Normal) et donne +1 en contrôle."
       }
     },
     {
@@ -378,10 +483,15 @@
       "ecurie": "the-crew-motorfest",
       "image": "data/images/Reeves.png",
       "classe": "Youtubeur",
+      "stats": {
+        "vitesse": 4,
+        "controle": 4
+      },
       "technique": {
         "nom": "Robot Sabotage",
         "description": "Michael Reeves lâche un de ses petits robots chaotiques pour venir perturber l'électronique adverse.",
-        "effet": "Ajoute un équipement/malus temporaire (Decorator) qui réduit la maniabilité de l'adversaire ciblé pendant 1 tour."
+        "cible": "devant",
+        "effet": "Vise le pilote juste devant. Pose un malus d'équipement (Decorator) : −1 en vitesse et en contrôle jusqu'aux réparations au garage, en fin de phase."
       }
     },
     {
@@ -391,10 +501,15 @@
       "ecurie": "durex",
       "image": "data/images/HOUDI.png",
       "classe": "Youtubeur",
+      "stats": {
+        "vitesse": 5,
+        "controle": 5
+      },
       "technique": {
         "nom": "Évasion à la Houdini",
         "description": "Fidèle à son nom, Houdi s'extirpe d'une position impossible comme par magie.",
-        "effet": "Rend le pilote intouchable (aucune collision/attaque subie) pendant 1 tour."
+        "cible": "soi",
+        "effet": "Retire l'état Perte Attention, Fatigué ou Épuisé : retour en état Normal."
       }
     },
     {
@@ -404,10 +519,15 @@
       "ecurie": "durex",
       "image": "data/images/Anyme.png",
       "classe": "Streameur",
+      "stats": {
+        "vitesse": 6,
+        "controle": 5
+      },
       "technique": {
         "nom": "Rage Clutch",
         "description": "AnymeTV est connu pour ses comebacks improbables en fin de partie, jamais hors course avant la ligne d'arrivée.",
-        "effet": "Ne s'active que si le pilote est en état Épuisé : boost de vitesse important et retour immédiat en état Normal."
+        "cible": "soi",
+        "effet": "Uniquement en état Épuisé : retour en état Normal et +2 en vitesse."
       }
     }
   ]

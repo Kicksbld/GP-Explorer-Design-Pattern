@@ -21,6 +21,12 @@ const EFFETS_TECHNIQUE = {
       pilote.stats.vitesse += 2;
     }
   },
+  'Réflexes de Pro': (pilote) => pilote.state.recevoirEffet(pilote, 'soin'),
+  'Évasion à la Houdini': (pilote) => pilote.state.recevoirEffet(pilote, 'soin'),
+  'Subathon Infini': (pilote) => {
+    pilote.state.recevoirEffet(pilote, 'soin');
+    pilote.stats.controle += 1;
+  },
 
   // inflige Perte Attention à la cible
   'Câlin Surprise': (_pilote, cible) => cible?.state.recevoirEffet(cible, 'perte-attention'),
@@ -29,6 +35,7 @@ const EFFETS_TECHNIQUE = {
   'Sauce Piquante': (_pilote, cible) => cible?.state.recevoirEffet(cible, 'perte-attention'),
   "C'est Ciao": (_pilote, cible) => cible?.state.recevoirEffet(cible, 'perte-attention'),
   'Ombre du Boss': (_pilote, cible) => cible?.state.recevoirEffet(cible, 'perte-attention'),
+  'Build Instantané': (_pilote, cible) => cible?.state.recevoirEffet(cible, 'perte-attention'),
 
   // inflige Fatigué à la cible
   'Cri de Guerre': (_pilote, cible) => cible?.state.recevoirEffet(cible, 'fatigue'),
@@ -37,6 +44,12 @@ const EFFETS_TECHNIQUE = {
   'Bendo Rush': (pilote) => { pilote.stats.vitesse += 1; },
   'Trajectoire Parfaite': (pilote) => { pilote.stats.vitesse += 1; },
   'Olé Drift': (pilote) => { pilote.stats.controle += 1; },
+  'Petit Pont Turbo': (pilote) => { pilote.stats.vitesse += 2; },
+  'Focus Radar': (pilote) => { pilote.stats.controle += 2; },
+  'Griffe Nocturne': (pilote) => {
+    pilote.stats.vitesse += 1;
+    pilote.stats.controle += 1;
+  },
   'Mode Deter': (pilote) => {
     pilote.stats.vitesse += 2;
     if (Math.random() < 0.5) {
@@ -49,6 +62,19 @@ const EFFETS_TECHNIQUE = {
   'Sale Coup Fourré': (_pilote, cible) => (cible ? new MalusEquipementDecorator(cible, 1) : undefined),
   'Robot Sabotage': (_pilote, cible) => (cible ? new MalusEquipementDecorator(cible, 1) : undefined),
 };
+
+// Techniques qui ramènent le pilote en état Normal (utilisé par l'IA pour
+// choisir entre sa technique et un arrêt au stand).
+export const TECHNIQUES_SOIN = new Set([
+  'Keep Pushing', 'Ça Fait Plaisir', 'Tabarnak Turbo', 'Rage Clutch',
+  'Réflexes de Pro', 'Évasion à la Houdini', 'Subathon Infini',
+]);
+
+export function techniqueSoigne(pilote) {
+  const nom = pilote.technique?.nom;
+  if (pilote.state.nom === 'Normal' || !TECHNIQUES_SOIN.has(nom)) return false;
+  return nom !== 'Rage Clutch' || pilote.state.nom === 'Épuisé';
+}
 
 export class Pilote {
   constructor({ id, pseudo, numero, ecurie, classe, technique, image, stats = {} }) {

@@ -5,10 +5,20 @@ import { PerteAttentionState } from './PerteAttentionState.js';
 const TOURS_AVANT_FATIGUE = 6;
 
 export class NormalState extends PiloteState {
-  #tours = 0;
+  #tours;
+
+  // `tours` permet au Memento de restaurer un état avec son compteur exact
+  constructor(tours = 0) {
+    super();
+    this.#tours = tours;
+  }
 
   get nom() {
     return 'Normal';
+  }
+
+  get tours() {
+    return this.#tours;
   }
 
   tick(pilote) {

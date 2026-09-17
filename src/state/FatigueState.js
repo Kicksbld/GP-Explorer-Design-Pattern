@@ -5,10 +5,20 @@ import { NormalState } from './NormalState.js';
 const TOURS_AVANT_EPUISEMENT = 3;
 
 export class FatigueState extends PiloteState {
-  #tours = 0;
+  #tours;
+
+  // `tours` permet au Memento de restaurer un état avec son compteur exact
+  constructor(tours = 0) {
+    super();
+    this.#tours = tours;
+  }
 
   get nom() {
     return 'Fatigué';
+  }
+
+  get tours() {
+    return this.#tours;
   }
 
   getModificateurVitesse() {
