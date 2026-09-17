@@ -29,6 +29,10 @@ export class Pilote {
   }
 
   getVitesse() {
-    return this.stats.vitesse;
+    return Math.max(0, this.stats.vitesse);
+  }
+
+  getControle() {
+    return Math.max(0, this.stats.controle);
   }
 }

@@ -1,6 +1,10 @@
 // Pattern: Singleton
 // Point d'accès unique aux données de data/db.json (pilotes + ecuries).
 
+import { readFile } from 'node:fs/promises';
+
+const DEFAULT_DB_URL = new URL('../../data/db.json', import.meta.url);
+
 export class PiloteDatabase {
   static #instance = null;
 
@@ -21,8 +25,11 @@ export class PiloteDatabase {
     return PiloteDatabase.#instance;
   }
 
-  async load(url = '/data/db.json') {
-    // TODO: fetch(url) -> this.#pilotes / this.#ecuries
+  async load(url = DEFAULT_DB_URL) {
+    const contenu = await readFile(url, 'utf-8');
+    const { pilotes = [], ecuries = [] } = JSON.parse(contenu);
+    this.#pilotes = pilotes;
+    this.#ecuries = ecuries;
   }
 
   getPilotes() {
@@ -30,7 +37,7 @@ export class PiloteDatabase {
   }
 
   getPiloteById(id) {
-    // TODO
+    return this.#pilotes.find((pilote) => pilote.id === id);
   }
 
   getEcuries() {
@@ -38,6 +45,6 @@ export class PiloteDatabase {
   }
 
   getEcurieById(id) {
-    // TODO
+    return this.#ecuries.find((ecurie) => ecurie.id === id);
   }
 }
