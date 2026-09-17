@@ -33,7 +33,6 @@
 
     <div class="control-toolbar" role="toolbar" aria-label="Contrôle de la course">
       <button type="button" class="btn btn--primary btn--sm" data-action="tour-suivant">Tour suivant</button>
-      <button type="button" class="btn btn--secondary btn--sm" data-action="pause">Pause</button>
       <button type="button" class="btn btn--secondary btn--sm" data-action="sauvegarder">Sauvegarder</button>
       <button type="button" class="btn btn--secondary btn--sm" data-action="restaurer">Restaurer T.10</button>
     </div>
@@ -60,50 +59,11 @@
 
         <dl class="race-facts">
           <div>
-            <dt>Drapeau</dt>
-            <dd><span class="flag" aria-hidden="true"></span>Vert</dd>
-          </div>
-          <div>
             <dt>En piste</dt>
             <dd>10/10</dd>
           </div>
-          <div>
-            <dt>Meilleur tour</dt>
-            <dd>1:12.617 <small>Squeezie, T.11</small></dd>
-          </div>
-          <div>
-            <dt>Écart en tête</dt>
-            <dd>0.412 s</dd>
-          </div>
         </dl>
       </div>
-
-      <figure class="gap-track">
-        <figcaption class="gap-track__caption">
-          <span>Écart au leader, en secondes<span class="sr-only"> : le détail pilote par pilote est dans le classement live.</span></span>
-          <span class="gap-track__legend" aria-hidden="true">
-            <span style="--key: var(--color-primary)">19 SCH</span>
-            <span style="--key: var(--color-neutral-0)">14 Squeezie</span>
-          </span>
-        </figcaption>
-        <div class="gap-track__plot" aria-hidden="true">
-          <span class="gap-track__tick" style="--at: 0"><span>0</span></span>
-          <span class="gap-track__tick" style="--at: 5"><span>5</span></span>
-          <span class="gap-track__tick" style="--at: 10"><span>10</span></span>
-          <span class="gap-track__tick" style="--at: 15"><span>15</span></span>
-
-          <span class="gap-track__pilote gap-track__pilote--top is-selected" style="--at: 0">19</span>
-          <span class="gap-track__pilote gap-track__pilote--bottom is-target" style="--at: 0.412">14</span>
-          <span class="gap-track__pilote gap-track__pilote--top" style="--at: 1.870">21</span>
-          <span class="gap-track__pilote gap-track__pilote--bottom" style="--at: 3.244">17</span>
-          <span class="gap-track__pilote gap-track__pilote--top" style="--at: 4.019">99</span>
-          <span class="gap-track__pilote gap-track__pilote--bottom" style="--at: 5.530">10</span>
-          <span class="gap-track__pilote gap-track__pilote--top" style="--at: 8.112">31</span>
-          <span class="gap-track__pilote gap-track__pilote--bottom" style="--at: 9.405">48</span>
-          <span class="gap-track__pilote gap-track__pilote--top" style="--at: 11.267">42</span>
-          <span class="gap-track__pilote gap-track__pilote--bottom" style="--at: 13.890">51</span>
-        </div>
-      </figure>
     </section>
 
     <!-- Duel en piste — pilote sélectionné contre sa cible (Command) -->
@@ -118,11 +78,6 @@
           <span class="state-badge state-badge--fatigue duel-card__state surface-ink">Fatigué</span>
         </div>
         <div class="duel-card__band">
-          <p class="duel-card__label">
-            Dernier tour
-            <span class="delta delta--gain surface-ink">−0.231 s<span class="sr-only">, plus rapide qu'au tour 11</span></span>
-          </p>
-          <p class="duel-card__time">1:12<span>.904</span></p>
           <p class="duel-card__name"><span class="duel-card__pos">P1</span>SCH<span class="duel-card__ecurie">Samsung</span></p>
         </div>
       </article>
@@ -135,11 +90,6 @@
           <span class="state-badge state-badge--perte-attention duel-card__state surface-ink">Perte attention</span>
         </div>
         <div class="duel-card__band">
-          <p class="duel-card__label">
-            Dernier tour
-            <span class="delta delta--loss surface-ink">+0.699 s<span class="sr-only">, plus lent qu'au tour 11</span></span>
-          </p>
-          <p class="duel-card__time">1:13<span>.316</span></p>
           <p class="duel-card__name"><span class="duel-card__pos">P2</span>Squeezie<span class="duel-card__ecurie">Netflix</span></p>
         </div>
       </article>
@@ -173,43 +123,6 @@
         <p class="stat__note">Classe Rappeur : −2, bloqué à 0.</p>
       </div>
 
-      <figure class="lap-chart">
-        <figcaption class="lap-chart__caption">
-          Temps au tour
-          <span class="lap-chart__legend">
-            <span style="--key: var(--color-primary)">Dernier 1:12.904</span>
-            <span style="--key: var(--color-neutral-0)">Meilleur 1:12.673, T.10</span>
-          </span>
-        </figcaption>
-        <div class="lap-chart__frame">
-          <span class="lap-chart__grid" style="--y: 0" aria-hidden="true"><span>1:15</span></span>
-          <span class="lap-chart__grid" style="--y: 40" aria-hidden="true"><span>1:14</span></span>
-          <span class="lap-chart__grid" style="--y: 80" aria-hidden="true"><span>1:13</span></span>
-          <span class="lap-chart__x" style="--x: 0" aria-hidden="true">T.1</span>
-          <span class="lap-chart__x" style="--x: 45.45" aria-hidden="true">T.6</span>
-          <span class="lap-chart__x" style="--x: 100" aria-hidden="true">T.12</span>
-
-          <svg class="lap-chart__line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-            <polyline points="0,5.2 9.09,43.6 18.18,61.8 27.27,75.2 36.36,80.1 45.45,68 54.55,86.2 63.64,79.5 72.73,72.5 81.82,93.1 90.91,74.6 100,83.8" />
-          </svg>
-
-          <ol class="lap-chart__points">
-            <li class="lap-chart__point" style="--x: 0; --y: 5.2" data-label="T.1 1:14.870"><span class="sr-only">Tour 1 : 1:14.870</span></li>
-            <li class="lap-chart__point" style="--x: 9.09; --y: 43.6" data-label="T.2 1:13.910"><span class="sr-only">Tour 2 : 1:13.910</span></li>
-            <li class="lap-chart__point" style="--x: 18.18; --y: 61.8" data-label="T.3 1:13.455"><span class="sr-only">Tour 3 : 1:13.455</span></li>
-            <li class="lap-chart__point" style="--x: 27.27; --y: 75.2" data-label="T.4 1:13.120"><span class="sr-only">Tour 4 : 1:13.120</span></li>
-            <li class="lap-chart__point" style="--x: 36.36; --y: 80.1" data-label="T.5 1:12.998"><span class="sr-only">Tour 5 : 1:12.998</span></li>
-            <li class="lap-chart__point" style="--x: 45.45; --y: 68" data-label="T.6 1:13.301"><span class="sr-only">Tour 6 : 1:13.301</span></li>
-            <li class="lap-chart__point" style="--x: 54.55; --y: 86.2" data-label="T.7 1:12.846"><span class="sr-only">Tour 7 : 1:12.846</span></li>
-            <li class="lap-chart__point" style="--x: 63.64; --y: 79.5" data-label="T.8 1:13.012"><span class="sr-only">Tour 8 : 1:13.012</span></li>
-            <li class="lap-chart__point" style="--x: 72.73; --y: 72.5" data-label="T.9 1:13.187"><span class="sr-only">Tour 9 : 1:13.187</span></li>
-            <li class="lap-chart__point is-best" style="--x: 81.82; --y: 93.1" data-label="T.10 1:12.673"><span class="sr-only">Tour 10 : 1:12.673, meilleur tour</span></li>
-            <li class="lap-chart__point" style="--x: 90.91; --y: 74.6" data-label="T.11 1:13.135"><span class="sr-only">Tour 11 : 1:13.135</span></li>
-            <li class="lap-chart__point is-last" style="--x: 100; --y: 83.8" data-label="T.12 1:12.904"><span class="sr-only">Tour 12 : 1:12.904</span></li>
-          </ol>
-        </div>
-      </figure>
-
       <div class="technique">
         <h3 class="technique__nom">C'est Ciao</h3>
         <p class="technique__desc">Signature de SCH : il lâche la phrase culte et disparaît du rétroviseur adverse sans prévenir.</p>
@@ -220,6 +133,23 @@
         <button type="button" class="btn btn--primary btn--sm" data-action="technique" data-pilote-id="sch" data-cible-id="squeezie">Utiliser C'est Ciao</button>
         <button type="button" class="btn btn--secondary btn--sm" data-action="accelerer" data-pilote-id="sch">Accélérer</button>
         <button type="button" class="btn btn--secondary btn--sm" data-action="depasser" data-pilote-id="sch" data-cible-id="squeezie">Dépasser Squeezie</button>
+      </div>
+
+      <div class="direction-control">
+        <div class="direction-control__head">
+          <h3 class="direction-control__title">Direction de course</h3>
+          <p class="tile__meta">Proxy</p>
+        </div>
+        <ul class="direction-control__list">
+          <li class="direction-control__entry">
+            <span class="direction-verdict direction-verdict--ok">Validée</span>
+            <span class="direction-control__text">Dépasser Squeezie — SCH autorisé, piste dégagée</span>
+          </li>
+          <li class="direction-control__entry">
+            <span class="direction-verdict direction-verdict--refused">Refusée</span>
+            <span class="direction-control__text">Utiliser C'est Ciao — technique déjà active ce tour, action bloquée</span>
+          </li>
+        </ul>
       </div>
 
       <div class="command-history">
