@@ -1,4 +1,4 @@
-// Pattern: Command (bonus) — interface pour les actions de course
+// Command (bonus) : interface commune pour les actions de course
 
 export class Command {
   execute() {
@@ -9,7 +9,7 @@ export class Command {
     throw new Error('undo() non implémenté');
   }
 
-  // Libellé affiché dans l'historique des commandes (UI) — chaque sous-classe le précise.
+  // chaque sous-classe redéfinit son propre libellé pour l'historique
   get label() {
     return 'Commande';
   }

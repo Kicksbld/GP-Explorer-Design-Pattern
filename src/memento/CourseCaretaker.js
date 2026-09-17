@@ -1,4 +1,4 @@
-// Pattern: Memento (bonus) — caretaker: historique de sauvegardes
+// Memento (bonus) : caretaker, garde l'historique des sauvegardes de course
 
 import { CourseMemento } from './CourseMemento.js';
 

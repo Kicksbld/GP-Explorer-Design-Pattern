@@ -1,5 +1,5 @@
-// Pattern: Composite (bonus) — une écurie agrège des Pilote et expose
-// la même interface qu'un pilote unique (stats agrégées, tick global).
+// Composite (bonus) : une écurie regroupe plusieurs Pilote et expose
+// la même interface qu'un pilote seul (stats agrégées, tick global).
 
 export class EcurieComposite {
   constructor(ecurie) {

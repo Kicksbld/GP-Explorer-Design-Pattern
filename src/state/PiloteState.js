@@ -1,4 +1,4 @@
-// Pattern: State — classe de base pour Normal / PerteAttention / Fatigue / Epuise
+// State : classe de base pour Normal, PerteAttention, Fatigue et Epuise
 
 export class PiloteState {
   get nom() {

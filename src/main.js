@@ -15,6 +15,8 @@ import { PerteAttentionState } from './state/PerteAttentionState.js';
 import { FatigueState } from './state/FatigueState.js';
 import { EpuiseState } from './state/EpuiseState.js';
 
+// Point d'entrée : charge les pilotes, crée le RaceEngine et branche les boutons du dashboard
+
 const CLASSES_ETAT = {
   Normal: NormalState,
   'Perte Attention': PerteAttentionState,
@@ -225,9 +227,8 @@ async function main() {
     mettreAJourPhaseStepper(weekend.phase);
   });
 
-  // Les actions de course passent par la Proxy (droit de commissaire) avant
-  // d'atteindre le RaceEngine : une action refusée n'apparaît que dans le
-  // panneau "Direction de course", jamais dans l'historique des commandes.
+  // les actions passent par la Proxy avant d'atteindre le RaceEngine, un refus
+  // n'apparaît que dans le panneau "Direction de course", pas dans l'historique
   function executerViaDirection(command) {
     try {
       direction.executer(command);

@@ -1,39 +1,51 @@
 # TP-GP_Explorer
 
-Système de gestion des entraînements et courses pour les pilotes du GP Explorer — TP noté sur les design patterns. Voir [REQUIREMENTS.md](./REQUIREMENTS.md) pour le sujet complet et [DESIGN.md](./DESIGN.md) pour la charte visuelle.
+TP noté du cours de Design Patterns. Le but était de concevoir un système de gestion des entraînements et courses pour des pilotes du GP Explorer (Squeezie, SCH, Sylvain Lyve, etc.) en utilisant les patterns vus en cours. L'énoncé complet du prof est dans [REQUIREMENTS.md](./REQUIREMENTS.md) et la charte visuelle utilisée pour le dashboard est dans [DESIGN.md](./DESIGN.md).
 
-## Architecture
+Le projet est un dashboard web (voir `index.html`) qui simule une course : on fait avancer les tours, on déclenche des actions (accélérer, dépasser, utiliser une technique), on voit le classement se mettre à jour en direct, et on peut sauvegarder/restaurer l'état de la course.
 
-Le code logique vit dans `src/`, un fichier = une classe = une responsabilité. Les données des pilotes/écuries sont dans [data/db.json](./data/db.json).
+## Lancer le projet
+
+Pas de build, pas de dépendances, juste du JS natif (modules ES) chargé par le navigateur.
+
+```bash
+npm start
+```
+
+Ça lance un serveur local sur `http://localhost:5500`. Il faut ouvrir `http://localhost:5500/index.html` (pas ouvrir le fichier directement avec `file://`, sinon le `fetch` qui charge `data/db.json` ne marche pas à cause des restrictions du navigateur sur les fichiers locaux).
+
+## Structure du projet
+
+Chaque pattern a son propre dossier dans `src/`, un fichier = une classe = une responsabilité.
 
 ```
 src/
   core/
-    PiloteDatabase.js          # Singleton — accès unique aux données (pilotes + écuries)
+    PiloteDatabase.js          # Singleton, accès aux données (pilotes + écuries)
 
   models/
-    Pilote.js                  # Entité de base (id, pseudo, technique, stats, state)
+    Pilote.js                  # Entité de base d'un pilote
     Ecurie.js                  # Entité écurie
 
   factory/
-    PiloteFactory.js           # Factory — instancie la bonne sous-classe selon `classe`
+    PiloteFactory.js           # Crée la bonne sous-classe de pilote selon sa classe
     classes/
       Youtubeur.js
       Streameur.js
       Rappeur.js
 
   builder/
-    PiloteBuilder.js           # Builder — personnalise un pilote étape par étape
+    PiloteBuilder.js           # Construit/personnalise un pilote étape par étape
 
   state/
-    PiloteState.js             # État de base
+    PiloteState.js             # État de base d'un pilote
     NormalState.js
     PerteAttentionState.js
     FatigueState.js
     EpuiseState.js
 
   observer/
-    ClassementSubject.js       # Sujet observable - notifie à chaque changement de classement
+    ClassementSubject.js       # Sujet observable, notifie à chaque changement de classement
     Spectator.js                # Observer concret
 
   decorator/
@@ -42,49 +54,52 @@ src/
       BonusVitesseDecorator.js
       MalusEquipementDecorator.js
 
-  command/                     # Bonus — Command Pattern
+  command/                     # Bonus
     Command.js
     commands/
       AccelererCommand.js
       DepasserCommand.js
       UtiliserTechniqueCommand.js
-    CourseInvoker.js           # File d'exécution + historique/undo
+    CourseInvoker.js           # File d'exécution des commandes + historique/undo
 
-  composite/                   # Bonus — Composite Pattern
-    EcurieComposite.js         # Agrège plusieurs Pilote sous l'interface d'une écurie
+  composite/                   # Bonus
+    EcurieComposite.js         # Regroupe les pilotes d'une écurie pour agréger leurs stats
 
-  proxy/                       # Bonus — Proxy Pattern
-    DirectionCourseProxy.js    # Valide une action avant de la déléguer
+  proxy/                       # Bonus
+    DirectionCourseProxy.js    # Valide une action avant de la transmettre au moteur
 
-  memento/                     # Bonus — Memento Pattern
-    CourseMemento.js
+  memento/                     # Bonus
     CourseCaretaker.js         # Sauvegarde/restauration de l'état d'une course
 
   engine/
-    RaceWeekend.js             # Orchestre les phases essais / qualifs / course
-    RaceEngine.js               # Boucle de course, relie State + Observer + Command + Decorator
+    RaceWeekend.js             # Gère les phases essais / qualifs / course
+    RaceEngine.js               # Boucle de course, fait le lien entre State, Observer, Command, Decorator
 
-  main.js                       # Point d'entrée / démo
+  main.js                      # Point d'entrée, branche le DOM sur le moteur
 ```
 
-## Correspondance patterns → rôle dans le jeu
+Les données des pilotes et écuries sont dans [data/db.json](./data/db.json).
 
-| Pattern | Fichier(s) | Rôle |
+## Patterns obligatoires
+
+| Pattern | Fichier(s) | Rôle dans le projet |
 |---|---|---|
-| Singleton | `core/PiloteDatabase.js` | Gestionnaire centralisé de la base des pilotes |
-| Factory | `factory/PiloteFactory.js` | Crée un `Youtubeur` / `Streameur` / `Rappeur` selon la classe |
+| Singleton | `core/PiloteDatabase.js` | Point d'accès unique à la base des pilotes et écuries |
+| Factory | `factory/PiloteFactory.js` | Crée un `Youtubeur`, `Streameur` ou `Rappeur` selon la classe du pilote |
 | Builder | `builder/PiloteBuilder.js` | Personnalise un pilote (stats, technique, transformations) |
-| State | `state/*.js` | États d'un pilote en course : Normal, Perte Attention, Fatigué, Épuisé |
+| State | `state/*.js` | États d'un pilote pendant la course : Normal, Perte Attention, Fatigué, Épuisé |
 | Observer | `observer/*.js` | Notifie les spectateurs à chaque changement de classement |
-| Decorator | `decorator/*.js` | Ajoute dynamiquement bonus/malus/équipements à un pilote |
-| Command *(bonus)* | `command/*.js` | Actions de course encapsulées (accélérer, dépasser, technique), avec historique |
-| Composite *(bonus)* | `composite/EcurieComposite.js` | Regroupe les pilotes d'une écurie, traités comme un tout |
-| Proxy *(bonus)* | `proxy/DirectionCourseProxy.js` | Contrôle/valide les actions avant exécution (direction de course) |
-| Memento *(bonus)* | `memento/*.js` | Sauvegarde et restauration de l'état d'une course |
+| Decorator | `decorator/*.js` | Ajoute dynamiquement des bonus ou des mali à un pilote |
 
-## État du code
+## Patterns bonus
 
-Les fichiers de `src/` sont pour l'instant des **squelettes** (classes et méthodes stubées avec `// TODO`) : la structure et les responsabilités sont posées, la logique métier (effets des techniques, calcul du classement, transitions d'état) reste à implémenter.
+| Pattern | Fichier(s) | Rôle dans le projet |
+|---|---|---|
+| Command | `command/*.js` | Encapsule les actions de course (accélérer, dépasser, technique) avec un historique et un undo |
+| Composite | `composite/EcurieComposite.js` | Regroupe les pilotes d'une écurie et les traite comme un seul bloc (vitesse moyenne) |
+| Proxy | `proxy/DirectionCourseProxy.js` | Fait office de direction de course : valide ou refuse une action avant qu'elle atteigne le moteur |
+| Memento | `memento/*.js` | Sauvegarde l'état d'une course (tour, phase, pilotes) et permet de le restaurer |
 
-Point d'entrée : [src/main.js](./src/main.js).
-# GP-Explorer-Design-Pattern
+## État du projet
+
+Tous les patterns demandés (obligatoires et bonus) sont implémentés et fonctionnels dans le dashboard.

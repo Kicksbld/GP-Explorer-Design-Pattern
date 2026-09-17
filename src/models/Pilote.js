@@ -1,5 +1,5 @@
-// Entité de base — étendue par les classes Factory (Youtubeur, Streameur, Rappeur)
-// et enveloppée par les Decorator (bonus/malus).
+// Entité de base, étendue par les classes de la Factory (Youtubeur, Streameur, Rappeur)
+// et pouvant être enveloppée par les Decorator (bonus/malus).
 
 import { NormalState } from '../state/NormalState.js';
 import { MalusEquipementDecorator } from '../decorator/decorators/MalusEquipementDecorator.js';
@@ -44,9 +44,8 @@ const EFFETS_TECHNIQUE = {
     }
   },
 
-  // malus d'équipement temporaire : renvoie la cible décorée (vitesse ET
-  // maniabilité réduites) au lieu de muter ses stats ; RaceEngine.executerTechnique
-  // se charge de remplacer la cible par cette version décorée dans son tableau.
+  // malus d'équipement : renvoie la cible décorée au lieu de muter ses stats,
+  // RaceEngine.executerTechnique se charge de la remplacer dans le tableau
   'Sale Coup Fourré': (_pilote, cible) => (cible ? new MalusEquipementDecorator(cible, 1) : undefined),
   'Robot Sabotage': (_pilote, cible) => (cible ? new MalusEquipementDecorator(cible, 1) : undefined),
 };

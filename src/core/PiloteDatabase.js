@@ -1,6 +1,5 @@
-// Pattern: Singleton
-// Point d'accès unique aux données de data/db.json (pilotes + ecuries).
-// Chargé via fetch() car ce module tourne dans le navigateur (dashboard index.html).
+// Singleton : point d'accès unique aux données de data/db.json (pilotes + écuries).
+// Chargé avec fetch() vu que le code tourne dans le navigateur.
 
 const DEFAULT_DB_URL = './data/db.json';
 

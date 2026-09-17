@@ -1,6 +1,5 @@
-// Pattern: Builder
-// Personnalise un pilote (stats custom, technique modifiée, équipement de départ)
-// étape par étape, indépendamment de la Factory qui gère juste la classe.
+// Builder : personnalise un pilote étape par étape (stats, technique, équipement)
+// indépendamment de la Factory qui elle ne gère que la classe.
 
 import { PiloteFactory } from '../factory/PiloteFactory.js';
 import { BonusVitesseDecorator } from '../decorator/decorators/BonusVitesseDecorator.js';

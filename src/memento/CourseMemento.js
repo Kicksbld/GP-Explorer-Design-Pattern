@@ -1,4 +1,4 @@
-// Pattern: Memento (bonus) — snapshot immuable de l'état d'une course
+// Memento (bonus) : snapshot immuable de l'état d'une course à un instant donné
 
 export class CourseMemento {
   #etat;

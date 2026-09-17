@@ -1,5 +1,5 @@
-// Pattern: Proxy (bonus) — contrôle/valide une action avant de la déléguer
-// au véritable sujet (RaceEngine), ex. droit de commissaire de course.
+// Proxy (bonus) : vérifie une action avant de la transmettre au RaceEngine,
+// un peu comme un commissaire de course qui valide ou refuse.
 
 import { UtiliserTechniqueCommand } from '../command/commands/UtiliserTechniqueCommand.js';
 import { DepasserCommand } from '../command/commands/DepasserCommand.js';
@@ -11,9 +11,8 @@ export class DirectionCourseProxy {
     this.sujetReel = sujetReel;
   }
 
-  // Valide la commande puis la délègue au RaceEngine si elle est autorisée.
-  // Le verdict (autorisé ou non) est toujours conservé, même en cas de refus,
-  // pour alimenter le panneau "Direction de course".
+  // vérifie la commande puis la délègue si elle est autorisée, le verdict est
+  // gardé dans tous les cas pour le panneau "Direction de course"
   executer(command) {
     const verdict = this.#verifier(command);
     this.#verdicts.push(verdict);

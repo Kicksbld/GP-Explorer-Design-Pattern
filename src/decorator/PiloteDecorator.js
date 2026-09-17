@@ -1,5 +1,5 @@
-// Pattern: Decorator — base pour ajouter dynamiquement bonus/malus/équipements
-// à un Pilote sans toucher à sa classe.
+// Decorator : classe de base pour ajouter des bonus/malus à un Pilote
+// sans toucher à sa classe d'origine.
 
 export class PiloteDecorator {
   constructor(pilote) {

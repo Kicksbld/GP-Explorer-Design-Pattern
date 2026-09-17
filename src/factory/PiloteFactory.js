@@ -1,5 +1,4 @@
-// Pattern: Factory
-// Choisit la sous-classe de Pilote à instancier selon le champ `classe` du JSON.
+// Factory : choisit la sous-classe de Pilote à créer selon le champ `classe` du JSON.
 
 import { Youtubeur } from './classes/Youtubeur.js';
 import { Streameur } from './classes/Streameur.js';

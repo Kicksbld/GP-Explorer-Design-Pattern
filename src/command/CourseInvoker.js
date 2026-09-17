@@ -1,4 +1,4 @@
-// Pattern: Command (bonus) — invoker: file d'exécution + historique/undo
+// Command (bonus) : invoker, exécute les commandes et garde l'historique pour l'undo
 
 export class CourseInvoker {
   #historique = [];

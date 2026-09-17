@@ -1,10 +1,10 @@
-// Représente une écurie. Sert aussi de "composant" pour le Composite bonus
-// (voir src/composite/EcurieComposite.js) qui, lui, agrège plusieurs Pilote.
+// Représente une écurie, utilisée par EcurieComposite (pattern Composite bonus)
+// pour regrouper plusieurs Pilote.
 
 export class Ecurie {
   constructor({ id, nom, pilotes = [] }) {
     this.id = id;
     this.nom = nom;
-    this.pilotes = pilotes; // liste d'ids ou d'instances Pilote selon le stade d'implémentation
+    this.pilotes = pilotes; // ids des pilotes de l'écurie
   }
 }

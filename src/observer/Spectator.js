@@ -1,7 +1,5 @@
-// Pattern: Observer — observer concret
-// Rend le classement reçu dans le tableau `.classement-list` du dashboard (index.html).
-// `classement` : tableau d'entrées déjà prêtes à l'affichage
-// { position, id, pseudo, numero, image, ecurieNom, stateNom }.
+// Observer concret : affiche le classement reçu dans `.classement-list` du dashboard.
+// chaque entrée : { position, id, pseudo, numero, image, ecurieNom, stateNom }
 
 export class Spectator {
   constructor(nom) {

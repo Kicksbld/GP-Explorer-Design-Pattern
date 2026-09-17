@@ -1,4 +1,4 @@
-// Moteur de course — fait interagir State, Observer, Command et Decorator
+// Moteur de course : fait le lien entre State, Observer, Command et Decorator
 // sur les Pilote fournis par PiloteDatabase.
 
 import { ClassementSubject } from '../observer/ClassementSubject.js';
@@ -30,16 +30,13 @@ export class RaceEngine {
     this.#publierClassement();
   }
 
-  // Republie le classement sans faire avancer le tour — utilisé après une
-  // restauration Memento, où les stats/états changent hors du cycle normal.
+  // republie le classement sans avancer le tour, utile après une restauration Memento
   rafraichirClassement() {
     this.#publierClassement();
   }
 
-  // Déclenche la technique d'un pilote. Si l'effet renvoie un pilote décoré
-  // (ex: MalusEquipementDecorator sur la cible), on le substitue dans le
-  // tableau pour que le reste du moteur (classement, ticks...) utilise
-  // désormais la version décorée.
+  // déclenche la technique d'un pilote et remplace la cible dans le tableau
+  // si l'effet renvoie une version décorée (ex: MalusEquipementDecorator)
   executerTechnique(pilote, cible) {
     const resultat = pilote.utiliserTechnique(cible);
     if (resultat && cible) {

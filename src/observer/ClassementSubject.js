@@ -1,5 +1,4 @@
-// Pattern: Observer
-// Sujet observable — notifie les spectateurs à chaque changement de classement.
+// Observer : sujet observable, notifie les spectateurs à chaque changement de classement.
 
 export class ClassementSubject {
   #observers = new Set();
