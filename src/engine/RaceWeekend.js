@@ -6,6 +6,8 @@ export const PHASES = Object.freeze({
   COURSE: 'course',
 });
 
+const ORDRE_PHASES = [PHASES.ESSAIS, PHASES.QUALIFS, PHASES.COURSE];
+
 export class RaceWeekend {
   constructor(raceEngine) {
     this.raceEngine = raceEngine;
@@ -13,6 +15,9 @@ export class RaceWeekend {
   }
 
   phaseSuivante() {
-    // TODO: ESSAIS -> QUALIFS -> COURSE
+    const index = ORDRE_PHASES.indexOf(this.phase);
+    if (index < ORDRE_PHASES.length - 1) {
+      this.phase = ORDRE_PHASES[index + 1];
+    }
   }
 }

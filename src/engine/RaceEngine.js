@@ -3,6 +3,7 @@
 
 import { ClassementSubject } from '../observer/ClassementSubject.js';
 import { CourseInvoker } from '../command/CourseInvoker.js';
+import { PiloteDatabase } from '../core/PiloteDatabase.js';
 
 export class RaceEngine {
   constructor(pilotes) {
@@ -15,7 +16,7 @@ export class RaceEngine {
   tourSuivant() {
     this.tour += 1;
     this.pilotes.forEach((p) => p.tick());
-    // TODO: recalculer l'ordre et pousser via this.classement.setClassement(...)
+    this.#publierClassement();
   }
 
   executer(command) {
@@ -31,6 +32,7 @@ export class RaceEngine {
     if (resultat && cible) {
       this.remplacerPilote(cible, resultat);
     }
+    this.#publierClassement();
     return resultat;
   }
 
@@ -39,5 +41,23 @@ export class RaceEngine {
     if (index !== -1) {
       this.pilotes[index] = nouveau;
     }
+  }
+
+  #publierClassement() {
+    const db = PiloteDatabase.getInstance();
+    const classement = this.pilotes
+      .slice()
+      .sort((a, b) => b.getVitesse() - a.getVitesse())
+      .map((p, index) => ({
+        position: index + 1,
+        id: p.id,
+        pseudo: p.pseudo,
+        numero: p.numero,
+        image: p.image,
+        ecurieNom: db.getEcurieById(p.ecurie)?.nom ?? p.ecurie,
+        stateNom: p.state.nom,
+      }));
+
+    this.classement.setClassement(classement);
   }
 }
