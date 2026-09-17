@@ -139,6 +139,10 @@ img { display: block; max-width: 100%; }
       "duel    pilote classement"
       "ecuries pilote journal";
   }
+
+  /* At this breakpoint, classement and journal share column 3. Stretch the
+     tile so its white surface meets journal instead of leaving a gray gap. */
+  .tile--classement { align-self: stretch; }
 }
 
 .tile {
@@ -380,6 +384,15 @@ img { display: block; max-width: 100%; }
    ========================================================================== */
 
 .classement-list { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; max-height: 24rem; overflow-y: auto; }
+
+@media (min-width: 1280px) {
+  /* At this breakpoint .tile--classement stretches to meet .tile--journal
+     (see the bento grid rules above); let the list use that full stretched
+     height instead of stopping at the 24rem mobile/tablet cap, which left
+     a white gap below the rows. This override must come after the base
+     rule above so it actually wins the cascade at this breakpoint. */
+  .classement-list { max-height: none; }
+}
 
 .classement-row {
   display: grid;
