@@ -3,9 +3,12 @@
 // étape par étape, indépendamment de la Factory qui gère juste la classe.
 
 import { PiloteFactory } from '../factory/PiloteFactory.js';
+import { BonusVitesseDecorator } from '../decorator/decorators/BonusVitesseDecorator.js';
+import { MalusEquipementDecorator } from '../decorator/decorators/MalusEquipementDecorator.js';
 
 export class PiloteBuilder {
   #data = { stats: {} };
+  #decorateurs = [];
 
   avecIdentite(id, pseudo, numero) {
     this.#data.id = id;
@@ -34,6 +37,16 @@ export class PiloteBuilder {
     return this;
   }
 
+  avecBonusVitesse(bonus) {
+    this.#decorateurs.push((pilote) => new BonusVitesseDecorator(pilote, bonus));
+    return this;
+  }
+
+  avecMalusEquipement(malus) {
+    this.#decorateurs.push((pilote) => new MalusEquipementDecorator(pilote, malus));
+    return this;
+  }
+
   build() {
     if (!this.#data.id) {
       throw new Error('PiloteBuilder: id manquant (avecIdentite)');
@@ -44,6 +57,7 @@ export class PiloteBuilder {
     if (!this.#data.classe) {
       throw new Error('PiloteBuilder: classe manquante (avecClasse)');
     }
-    return PiloteFactory.create(this.#data);
+    const pilote = PiloteFactory.create(this.#data);
+    return this.#decorateurs.reduce((courant, decorer) => decorer(courant), pilote);
   }
 }

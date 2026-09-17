@@ -14,8 +14,44 @@ export class PiloteDecorator {
     return this.pilote.pseudo;
   }
 
+  get numero() {
+    return this.pilote.numero;
+  }
+
+  get ecurie() {
+    return this.pilote.ecurie;
+  }
+
+  get classe() {
+    return this.pilote.classe;
+  }
+
+  get technique() {
+    return this.pilote.technique;
+  }
+
+  get image() {
+    return this.pilote.image;
+  }
+
+  get state() {
+    return this.pilote.state;
+  }
+
+  setState(state) {
+    this.pilote.setState(state);
+  }
+
+  utiliserTechnique(cible) {
+    this.pilote.utiliserTechnique(cible);
+  }
+
   getVitesse() {
     return this.pilote.getVitesse();
+  }
+
+  getControle() {
+    return this.pilote.getControle();
   }
 
   tick() {

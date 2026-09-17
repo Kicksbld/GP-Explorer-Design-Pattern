@@ -21,4 +21,23 @@ export class RaceEngine {
   executer(command) {
     this.invoker.executer(command);
   }
+
+  // Déclenche la technique d'un pilote. Si l'effet renvoie un pilote décoré
+  // (ex: MalusEquipementDecorator sur la cible), on le substitue dans le
+  // tableau pour que le reste du moteur (classement, ticks...) utilise
+  // désormais la version décorée.
+  executerTechnique(pilote, cible) {
+    const resultat = pilote.utiliserTechnique(cible);
+    if (resultat && cible) {
+      this.remplacerPilote(cible, resultat);
+    }
+    return resultat;
+  }
+
+  remplacerPilote(ancien, nouveau) {
+    const index = this.pilotes.indexOf(ancien);
+    if (index !== -1) {
+      this.pilotes[index] = nouveau;
+    }
+  }
 }

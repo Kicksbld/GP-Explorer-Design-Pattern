@@ -11,4 +11,8 @@ export class MalusEquipementDecorator extends PiloteDecorator {
   getVitesse() {
     return Math.max(0, super.getVitesse() - this.malus);
   }
+
+  getControle() {
+    return Math.max(0, super.getControle() - this.malus);
+  }
 }

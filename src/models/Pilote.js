@@ -2,6 +2,7 @@
 // et enveloppée par les Decorator (bonus/malus).
 
 import { NormalState } from '../state/NormalState.js';
+import { MalusEquipementDecorator } from '../decorator/decorators/MalusEquipementDecorator.js';
 
 const EFFETS_TECHNIQUE = {
   // soins : retirent l'état négatif et repassent en Normal
@@ -43,8 +44,11 @@ const EFFETS_TECHNIQUE = {
     }
   },
 
-  'Sale Coup Fourré': (_pilote, cible) => { if (cible) cible.stats.vitesse -= 1; },
-  'Robot Sabotage': (_pilote, cible) => { if (cible) cible.stats.controle -= 1; },
+  // malus d'équipement temporaire : renvoie la cible décorée (vitesse ET
+  // maniabilité réduites) au lieu de muter ses stats ; RaceEngine.executerTechnique
+  // se charge de remplacer la cible par cette version décorée dans son tableau.
+  'Sale Coup Fourré': (_pilote, cible) => (cible ? new MalusEquipementDecorator(cible, 1) : undefined),
+  'Robot Sabotage': (_pilote, cible) => (cible ? new MalusEquipementDecorator(cible, 1) : undefined),
 };
 
 export class Pilote {
@@ -70,9 +74,7 @@ export class Pilote {
 
   utiliserTechnique(cible) {
     const effet = EFFETS_TECHNIQUE[this.technique?.nom];
-    if (effet) {
-      effet(this, cible);
-    }
+    return effet ? effet(this, cible) : undefined;
   }
 
   getVitesse() {
