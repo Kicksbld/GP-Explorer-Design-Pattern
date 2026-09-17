@@ -5,11 +5,16 @@ export class PiloteState {
     throw new Error('nom non implémenté');
   }
 
+  // Facteur appliqué à la vitesse du pilote tant qu'il est dans cet état.
+  getModificateurVitesse() {
+    return 1;
+  }
+
   tick(pilote) {
-    // TODO: comportement par tour de course dans cet état
+    // comportement neutre par défaut : rien ne se passe automatiquement
   }
 
   recevoirEffet(pilote, effet) {
-    // TODO: transition éventuelle vers un autre state selon l'effet reçu
+    // ignoré par défaut ; chaque état concret décide des effets qu'il accepte
   }
 }
