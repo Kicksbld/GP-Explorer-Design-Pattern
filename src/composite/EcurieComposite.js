@@ -21,6 +21,7 @@ export class EcurieComposite {
 
   getVitesseMoyenne() {
     if (this.pilotes.length === 0) return 0;
-    // TODO
+    const total = this.pilotes.reduce((somme, pilote) => somme + pilote.getVitesse(), 0);
+    return total / this.pilotes.length;
   }
 }

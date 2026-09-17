@@ -7,6 +7,7 @@ import { RaceWeekend, PHASES } from './engine/RaceWeekend.js';
 import { AccelererCommand } from './command/commands/AccelererCommand.js';
 import { DepasserCommand } from './command/commands/DepasserCommand.js';
 import { UtiliserTechniqueCommand } from './command/commands/UtiliserTechniqueCommand.js';
+import { EcurieComposite } from './composite/EcurieComposite.js';
 
 const LIBELLES_PHASE = {
   [PHASES.ESSAIS]: 'Essais',
@@ -58,6 +59,80 @@ function mettreAJourHistorique(engine) {
   }));
 }
 
+// Regroupe les pilotes par écurie (Composite) pour agréger leur vitesse moyenne.
+function construireEcuries(engine) {
+  const composites = new Map();
+  engine.pilotes.forEach((pilote) => {
+    if (!composites.has(pilote.ecurie)) {
+      composites.set(pilote.ecurie, new EcurieComposite(pilote.ecurie));
+    }
+    composites.get(pilote.ecurie).ajouter(pilote);
+  });
+  return composites;
+}
+
+function mettreAJourEcuries(engine, db) {
+  const liste = document.querySelector('.ecurie-list');
+  if (!liste) return;
+
+  const piloteSelectionneId = document.querySelector('[data-action="technique"]')?.dataset.piloteId;
+  const ecurieSelectionnee = engine.pilotes.find((p) => p.id === piloteSelectionneId)?.ecurie;
+
+  const lignes = [...construireEcuries(engine).entries()]
+    .map(([ecurieId, composite]) => ({
+      ecurieId,
+      composite,
+      nom: db.getEcurieById(ecurieId)?.nom ?? ecurieId,
+      vitesseMoyenne: composite.getVitesseMoyenne(),
+    }))
+    .sort((a, b) => b.vitesseMoyenne - a.vitesseMoyenne);
+
+  liste.replaceChildren(...lignes.map(({ ecurieId, composite, nom, vitesseMoyenne }) => {
+    const li = document.createElement('li');
+    li.className = 'ecurie-row';
+    if (ecurieId === ecurieSelectionnee) li.classList.add('is-highlighted');
+    li.dataset.ecurieId = ecurieId;
+    li.style.setProperty('--v', vitesseMoyenne.toFixed(1));
+
+    const avatars = document.createElement('span');
+    avatars.className = 'ecurie-row__avatars';
+    avatars.setAttribute('aria-hidden', 'true');
+    composite.pilotes.forEach((pilote) => {
+      const avatar = document.createElement('span');
+      avatar.className = 'avatar avatar--sm';
+      const img = document.createElement('img');
+      img.src = pilote.image;
+      img.alt = '';
+      img.loading = 'lazy';
+      avatar.appendChild(img);
+      avatars.appendChild(avatar);
+    });
+
+    const identite = document.createElement('span');
+    identite.className = 'ecurie-row__identity';
+    const nomEl = document.createElement('span');
+    nomEl.className = 'ecurie-row__nom';
+    nomEl.textContent = nom;
+    const pilotesEl = document.createElement('span');
+    pilotesEl.className = 'ecurie-row__pilotes';
+    pilotesEl.textContent = composite.pilotes.map((p) => p.pseudo).join(', ');
+    identite.append(nomEl, pilotesEl);
+
+    const mesure = document.createElement('span');
+    mesure.className = 'ecurie-row__measure';
+    const bar = document.createElement('span');
+    bar.className = 'ecurie-row__bar';
+    bar.setAttribute('aria-hidden', 'true');
+    const stat = document.createElement('span');
+    stat.className = 'ecurie-row__stat';
+    stat.textContent = vitesseMoyenne.toFixed(1);
+    mesure.append(bar, stat);
+
+    li.append(avatars, identite, mesure);
+    return li;
+  }));
+}
+
 async function main() {
   const db = PiloteDatabase.getInstance();
   await db.load();
@@ -72,9 +147,11 @@ async function main() {
   engine.tourSuivant();
   mettreAJourPhaseStepper(weekend.phase);
   mettreAJourHistorique(engine);
+  mettreAJourEcuries(engine, db);
 
   document.querySelector('[data-action="tour-suivant"]')?.addEventListener('click', () => {
     engine.tourSuivant();
+    mettreAJourEcuries(engine, db);
   });
 
   document.querySelector('[data-action="phase-suivante"]')?.addEventListener('click', () => {
@@ -89,6 +166,7 @@ async function main() {
       if (pilote) {
         engine.executer(new UtiliserTechniqueCommand(engine, pilote, cible));
         mettreAJourHistorique(engine);
+        mettreAJourEcuries(engine, db);
       }
     });
   });
@@ -99,6 +177,7 @@ async function main() {
       if (pilote) {
         engine.executer(new AccelererCommand(pilote));
         mettreAJourHistorique(engine);
+        mettreAJourEcuries(engine, db);
       }
     });
   });
@@ -110,6 +189,7 @@ async function main() {
       if (pilote) {
         engine.executer(new DepasserCommand(pilote, cible));
         mettreAJourHistorique(engine);
+        mettreAJourEcuries(engine, db);
       }
     });
   });
@@ -118,6 +198,7 @@ async function main() {
     bouton.addEventListener('click', () => {
       engine.annulerDerniere();
       mettreAJourHistorique(engine);
+      mettreAJourEcuries(engine, db);
     });
   });
 }
