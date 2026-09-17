@@ -107,6 +107,7 @@ img { display: block; max-width: 100%; }
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   grid-template-areas: "status" "duel" "pilote" "classement" "journal" "ecuries";
+  align-items: start;
   gap: var(--bento-gap);
   max-width: var(--container-fixed-l);
   margin: 0 auto;
@@ -116,9 +117,13 @@ img { display: block; max-width: 100%; }
 .tile--status { grid-area: status; }
 .duel { grid-area: duel; }
 .tile--pilote { grid-area: pilote; }
-.tile--classement { grid-area: classement; align-self: start; }
+.tile--classement { grid-area: classement; }
 .tile--ecuries { grid-area: ecuries; }
 .tile--journal { grid-area: journal; }
+
+/* Wrapper neutre en dessous de 1280px : il ne participe pas au layout,
+   les tuiles restent placées directement par grid-area ci-dessus. */
+.control-col { display: contents; }
 
 @media (min-width: 768px) {
   .control-layout {
@@ -132,17 +137,27 @@ img { display: block; max-width: 100%; }
 }
 
 @media (min-width: 1280px) {
+  /* La tuile "pilote" est bien plus haute que ses voisines. Dans une grille
+     à zones nommées, les lignes sont partagées par toutes les colonnes : la
+     hauteur de "pilote" imposerait soit des trous (align-items: start) soit
+     un étirement artificiel des tuiles courtes (align-items: stretch). On
+     passe donc à 3 colonnes flex indépendantes (control-col), chacune
+     empilant ses tuiles à sa propre hauteur, sans lien avec les autres. */
   .control-layout {
-    grid-template-columns: minmax(0, 5fr) minmax(0, 3fr) minmax(0, 4fr);
-    grid-template-areas:
-      "status  pilote classement"
-      "duel    pilote classement"
-      "ecuries pilote journal";
+    display: flex;
+    align-items: flex-start;
   }
 
-  /* At this breakpoint, classement and journal share column 3. Stretch the
-     tile so its white surface meets journal instead of leaving a gray gap. */
-  .tile--classement { align-self: stretch; }
+  .control-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--bento-gap);
+    min-width: 0;
+  }
+
+  .control-col--left { flex: 5 1 0; }
+  .control-col--center { flex: 3 1 0; }
+  .control-col--right { flex: 4 1 0; }
 }
 
 .tile {

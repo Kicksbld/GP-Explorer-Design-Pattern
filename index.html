@@ -40,6 +40,7 @@
   </header>
 
   <main id="main" class="control-layout">
+    <div class="control-col control-col--left">
     <!-- Statut de course — RaceWeekend + RaceEngine -->
     <section class="tile tile--status surface-ink" aria-labelledby="status-title">
       <div class="tile__head">
@@ -96,6 +97,74 @@
       </article>
     </section>
 
+    <!-- Écuries — Composite -->
+    <section class="tile tile--ecuries surface-white" aria-labelledby="ecuries-title">
+      <div class="tile__head">
+        <h2 class="tile__title" id="ecuries-title">Écuries</h2>
+        <p class="tile__meta">Vitesse moyenne des pilotes, sur 10</p>
+      </div>
+      <ul class="ecurie-list">
+        <li class="ecurie-row" data-ecurie-id="netflix" style="--v: 9.1">
+          <span class="ecurie-row__avatars" aria-hidden="true">
+            <span class="avatar avatar--sm"><img src="data/images/Squeezie.png" alt="" loading="lazy" /></span>
+            <span class="avatar avatar--sm"><img src="data/images/AMINE.png" alt="" loading="lazy" /></span>
+          </span>
+          <span class="ecurie-row__identity">
+            <span class="ecurie-row__nom">Netflix</span>
+            <span class="ecurie-row__pilotes">Squeezie, Amine</span>
+          </span>
+          <span class="ecurie-row__measure"><span class="ecurie-row__bar" aria-hidden="true"></span><span class="ecurie-row__stat">9.1</span></span>
+        </li>
+        <li class="ecurie-row" data-ecurie-id="cupra" style="--v: 8.7">
+          <span class="ecurie-row__avatars" aria-hidden="true">
+            <span class="avatar avatar--sm"><img src="data/images/KARCHEZ.png" alt="" loading="lazy" /></span>
+            <span class="avatar avatar--sm"><img src="data/images/Ander.png" alt="" loading="lazy" /></span>
+          </span>
+          <span class="ecurie-row__identity">
+            <span class="ecurie-row__nom">CUPRA</span>
+            <span class="ecurie-row__pilotes">Karchez, Ander</span>
+          </span>
+          <span class="ecurie-row__measure"><span class="ecurie-row__bar" aria-hidden="true"></span><span class="ecurie-row__stat">8.7</span></span>
+        </li>
+        <li class="ecurie-row is-highlighted" data-ecurie-id="samsung" style="--v: 8.2">
+          <span class="ecurie-row__avatars" aria-hidden="true">
+            <span class="avatar avatar--sm"><img src="data/images/SCH.png" alt="" loading="lazy" /></span>
+            <span class="avatar avatar--sm"><img src="data/images/Bili.png" alt="" loading="lazy" /></span>
+          </span>
+          <span class="ecurie-row__identity">
+            <span class="ecurie-row__nom">Samsung</span>
+            <span class="ecurie-row__pilotes">SCH, Billy</span>
+          </span>
+          <span class="ecurie-row__measure"><span class="ecurie-row__bar" aria-hidden="true"></span><span class="ecurie-row__stat">8.2</span></span>
+        </li>
+        <li class="ecurie-row" data-ecurie-id="sol-de-janeiro" style="--v: 7.8">
+          <span class="ecurie-row__avatars" aria-hidden="true">
+            <span class="avatar avatar--sm"><img src="data/images/Magla.png" alt="" loading="lazy" /></span>
+            <span class="avatar avatar--sm"><img src="data/images/LEA.png" alt="" loading="lazy" /></span>
+          </span>
+          <span class="ecurie-row__identity">
+            <span class="ecurie-row__nom">Sol de Janeiro</span>
+            <span class="ecurie-row__pilotes">Maghla, Lea Elui</span>
+          </span>
+          <span class="ecurie-row__measure"><span class="ecurie-row__bar" aria-hidden="true"></span><span class="ecurie-row__stat">7.8</span></span>
+        </li>
+        <li class="ecurie-row" data-ecurie-id="the-crew-motorfest" style="--v: 6.9">
+          <span class="ecurie-row__avatars" aria-hidden="true">
+            <span class="avatar avatar--sm"><img src="data/images/Ludwig.png" alt="" loading="lazy" /></span>
+            <span class="avatar avatar--sm"><img src="data/images/Reeves.png" alt="" loading="lazy" /></span>
+          </span>
+          <span class="ecurie-row__identity">
+            <span class="ecurie-row__nom">The Crew Motorfest</span>
+            <span class="ecurie-row__pilotes">Ludwig, Michael Reeves</span>
+          </span>
+          <span class="ecurie-row__measure"><span class="ecurie-row__bar" aria-hidden="true"></span><span class="ecurie-row__stat">6.9</span></span>
+        </li>
+      </ul>
+      <p class="tile__foot"><span class="swatch" aria-hidden="true"></span>Samsung, l'écurie du pilote sélectionné</p>
+    </section>
+    </div>
+
+    <div class="control-col control-col--center">
     <!-- Pilote sélectionné — State + Decorator + Command -->
     <section class="tile tile--pilote surface-ink" aria-labelledby="pilote-title">
       <div class="pilote-head">
@@ -165,7 +234,9 @@
         </ol>
       </div>
     </section>
+    </div>
 
+    <div class="control-col control-col--right">
     <!-- Classement live — Observer -->
     <section class="tile tile--classement surface-white" aria-labelledby="classement-title">
       <div class="tile__head">
@@ -266,72 +337,6 @@
       </ol>
     </section>
 
-    <!-- Écuries — Composite -->
-    <section class="tile tile--ecuries surface-white" aria-labelledby="ecuries-title">
-      <div class="tile__head">
-        <h2 class="tile__title" id="ecuries-title">Écuries</h2>
-        <p class="tile__meta">Vitesse moyenne des pilotes, sur 10</p>
-      </div>
-      <ul class="ecurie-list">
-        <li class="ecurie-row" data-ecurie-id="netflix" style="--v: 9.1">
-          <span class="ecurie-row__avatars" aria-hidden="true">
-            <span class="avatar avatar--sm"><img src="data/images/Squeezie.png" alt="" loading="lazy" /></span>
-            <span class="avatar avatar--sm"><img src="data/images/AMINE.png" alt="" loading="lazy" /></span>
-          </span>
-          <span class="ecurie-row__identity">
-            <span class="ecurie-row__nom">Netflix</span>
-            <span class="ecurie-row__pilotes">Squeezie, Amine</span>
-          </span>
-          <span class="ecurie-row__measure"><span class="ecurie-row__bar" aria-hidden="true"></span><span class="ecurie-row__stat">9.1</span></span>
-        </li>
-        <li class="ecurie-row" data-ecurie-id="cupra" style="--v: 8.7">
-          <span class="ecurie-row__avatars" aria-hidden="true">
-            <span class="avatar avatar--sm"><img src="data/images/KARCHEZ.png" alt="" loading="lazy" /></span>
-            <span class="avatar avatar--sm"><img src="data/images/Ander.png" alt="" loading="lazy" /></span>
-          </span>
-          <span class="ecurie-row__identity">
-            <span class="ecurie-row__nom">CUPRA</span>
-            <span class="ecurie-row__pilotes">Karchez, Ander</span>
-          </span>
-          <span class="ecurie-row__measure"><span class="ecurie-row__bar" aria-hidden="true"></span><span class="ecurie-row__stat">8.7</span></span>
-        </li>
-        <li class="ecurie-row is-highlighted" data-ecurie-id="samsung" style="--v: 8.2">
-          <span class="ecurie-row__avatars" aria-hidden="true">
-            <span class="avatar avatar--sm"><img src="data/images/SCH.png" alt="" loading="lazy" /></span>
-            <span class="avatar avatar--sm"><img src="data/images/Bili.png" alt="" loading="lazy" /></span>
-          </span>
-          <span class="ecurie-row__identity">
-            <span class="ecurie-row__nom">Samsung</span>
-            <span class="ecurie-row__pilotes">SCH, Billy</span>
-          </span>
-          <span class="ecurie-row__measure"><span class="ecurie-row__bar" aria-hidden="true"></span><span class="ecurie-row__stat">8.2</span></span>
-        </li>
-        <li class="ecurie-row" data-ecurie-id="sol-de-janeiro" style="--v: 7.8">
-          <span class="ecurie-row__avatars" aria-hidden="true">
-            <span class="avatar avatar--sm"><img src="data/images/Magla.png" alt="" loading="lazy" /></span>
-            <span class="avatar avatar--sm"><img src="data/images/LEA.png" alt="" loading="lazy" /></span>
-          </span>
-          <span class="ecurie-row__identity">
-            <span class="ecurie-row__nom">Sol de Janeiro</span>
-            <span class="ecurie-row__pilotes">Maghla, Lea Elui</span>
-          </span>
-          <span class="ecurie-row__measure"><span class="ecurie-row__bar" aria-hidden="true"></span><span class="ecurie-row__stat">7.8</span></span>
-        </li>
-        <li class="ecurie-row" data-ecurie-id="the-crew-motorfest" style="--v: 6.9">
-          <span class="ecurie-row__avatars" aria-hidden="true">
-            <span class="avatar avatar--sm"><img src="data/images/Ludwig.png" alt="" loading="lazy" /></span>
-            <span class="avatar avatar--sm"><img src="data/images/Reeves.png" alt="" loading="lazy" /></span>
-          </span>
-          <span class="ecurie-row__identity">
-            <span class="ecurie-row__nom">The Crew Motorfest</span>
-            <span class="ecurie-row__pilotes">Ludwig, Michael Reeves</span>
-          </span>
-          <span class="ecurie-row__measure"><span class="ecurie-row__bar" aria-hidden="true"></span><span class="ecurie-row__stat">6.9</span></span>
-        </li>
-      </ul>
-      <p class="tile__foot"><span class="swatch" aria-hidden="true"></span>Samsung, l'écurie du pilote sélectionné</p>
-    </section>
-
     <!-- Journal de course — Observer -->
     <section class="tile tile--journal surface-white" aria-labelledby="journal-title">
       <div class="tile__head">
@@ -376,6 +381,7 @@
         </li>
       </ol>
     </section>
+    </div>
   </main>
 
   <script type="module" src="./src/main.js"></script>
