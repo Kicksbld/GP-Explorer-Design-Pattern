@@ -35,7 +35,15 @@ export class PiloteBuilder {
   }
 
   build() {
-    // TODO: validations avant de déléguer la construction à la Factory
+    if (!this.#data.id) {
+      throw new Error('PiloteBuilder: id manquant (avecIdentite)');
+    }
+    if (!this.#data.pseudo) {
+      throw new Error('PiloteBuilder: pseudo manquant (avecIdentite)');
+    }
+    if (!this.#data.classe) {
+      throw new Error('PiloteBuilder: classe manquante (avecClasse)');
+    }
     return PiloteFactory.create(this.#data);
   }
 }

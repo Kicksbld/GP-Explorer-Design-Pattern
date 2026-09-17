@@ -1,23 +1,48 @@
 /* ==========================================================================
    GP Explorer — Salle de contrôle (dashboard)
-   Page-specific layout + components. Consumes ./components.css (which
-   consumes ./variables.css) — import both before this file.
-   Static markup only: no JS behavior is implied by these classes beyond
-   :hover/:focus-visible states.
+   Bento layout on the brand's gray canvas: ink tiles for race status and
+   telemetry, red portrait tiles for the duel, white tiles for tables.
+   Static markup only: no JS behavior beyond :hover/:focus-visible.
    ========================================================================== */
 
 @import "./components.css";
 
-/* ==========================================================================
-   Base / skip link
-   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
 
 body {
   margin: 0;
   background: var(--color-bg);
   color: var(--color-text-primary);
   font-family: var(--font-body);
+  font-size: var(--fs-body);
   line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, p, dl, dd, figure, ol, ul { margin: 0; }
+ol, ul { padding: 0; list-style: none; }
+img { display: block; max-width: 100%; }
+
+/* Shared display voice: compressed, black, italic, uppercase (sourced) */
+.brand__mark, .phase-stepper__item, .tile__title, .lap-counter__value,
+.duel-card__numero, .duel-card__name, .pilote-head__name, .technique__nom,
+.classement-row__pseudo, .ecurie-row__nom {
+  font-family: var(--font-display);
+  font-stretch: var(--stretch-compressed);
+  font-style: italic;
+  font-weight: var(--fw-black);
+  text-transform: uppercase;
+  line-height: 0.9;
+  word-spacing: 0.12em;
+}
+
+/* Shared timing voice: extended figures */
+.race-facts dd, .gap-track__pilote, .duel-card__time, .duel-card__pos, .delta,
+.stat__value, .classement-row__pos, .classement-row__gap, .ecurie-row__stat,
+.journal-entry__time {
+  font-family: var(--font-number);
+  font-stretch: var(--stretch-extended);
+  font-weight: var(--fw-bold);
 }
 
 .skip-link {
@@ -28,17 +53,12 @@ body {
   padding: var(--space-2) var(--space-4);
   background: var(--color-text-primary);
   color: var(--color-text-inverted);
-  font-family: var(--font-display);
-  text-transform: uppercase;
   text-decoration: none;
 }
-
-.skip-link:focus {
-  top: var(--space-2);
-}
+.skip-link:focus { top: var(--space-2); }
 
 /* ==========================================================================
-   Header — logo, phases du week-end, actions de course
+   Header
    ========================================================================== */
 
 .control-header {
@@ -46,508 +66,382 @@ body {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-4);
-  padding: var(--space-4);
-  background: var(--color-surface-inverted);
-  color: var(--color-text-inverted);
+  gap: var(--space-3) var(--space-8);
+  padding: var(--space-3) var(--space-4);
   border-bottom: 4px solid var(--color-primary);
 }
 
-@media (min-width: 1024px) {
-  .control-header {
-    padding: var(--space-4) var(--space-6);
-  }
-}
+.brand { display: flex; align-items: baseline; gap: var(--space-3); }
+.brand__mark { font-size: 2rem; }
+.brand__sub { font-size: var(--fs-small); font-weight: var(--fw-regular); color: var(--tile-muted); }
 
-.control-header__brand {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-2);
-  font-family: var(--font-display);
-  font-style: italic;
-  text-transform: uppercase;
-}
-
-.control-header__brand-mark {
-  font-size: 1.5rem;
-  font-weight: var(--fw-black);
-}
-
-.control-header__brand-sub {
-  font-size: var(--fs-h5);
-  font-weight: var(--fw-regular);
-  color: var(--color-neutral-400);
-  font-style: normal;
-}
-
-/* Phase stepper: Essais ▸ Qualifs ▸ Course */
-.phase-stepper {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
+.phase-stepper { display: flex; align-items: center; gap: var(--space-2); }
 
 .phase-stepper__item {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  font-family: var(--font-display);
-  font-size: var(--fs-h5);
-  font-weight: var(--fw-h5);
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: var(--color-neutral-400);
+  font-size: 1.25rem;
+  color: var(--tile-muted);
 }
 
 .phase-stepper__item + .phase-stepper__item::before {
-  content: "\25B8"; /* ▸ */
-  margin-right: var(--space-2);
-  color: var(--color-neutral-400);
+  content: "";
+  width: var(--space-6);
+  height: 1px;
+  background: var(--color-neutral-700);
 }
 
-.phase-stepper__item[aria-current="step"] {
-  color: var(--color-text-inverted);
-}
+.phase-stepper__dot { width: 0.5rem; height: 0.5rem; background: var(--color-neutral-700); }
+.phase-stepper__item--done .phase-stepper__dot { background: var(--color-neutral-400); }
+.phase-stepper__item[aria-current="step"] { color: var(--color-text-inverted); }
+.phase-stepper__item[aria-current="step"] .phase-stepper__dot { background: var(--color-primary); }
 
-.phase-stepper__item[aria-current="step"] .phase-stepper__dot {
-  background: var(--color-primary);
-}
-
-.phase-stepper__item--done {
-  color: var(--color-neutral-200);
-}
-
-.phase-stepper__dot {
-  width: 0.5rem;
-  height: 0.5rem;
-  background: var(--color-neutral-400);
-  flex-shrink: 0;
-}
-
-.phase-stepper__item[aria-current="step"] .phase-stepper__dot {
-  background: var(--color-primary);
-}
-
-/* Toolbar — smaller button variant for a dense header, same brand language */
-.control-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-
-.btn--sm {
-  padding: var(--space-2) var(--space-3);
-  font-size: 0.875rem;
-}
-
-@media (min-width: 1280px) {
-  .btn--sm {
-    font-size: 1rem;
-  }
-}
-
-.control-header .btn--secondary {
-  box-shadow: inset 0 0 0 1px var(--color-neutral-400);
-  color: var(--color-text-inverted);
-}
-.control-header .btn--secondary::before {
-  background: var(--color-text-inverted);
-}
-.control-header .btn--secondary:hover,
-.control-header .btn--secondary:focus-visible {
-  color: var(--color-text-primary);
-}
+.control-toolbar { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 
 /* ==========================================================================
-   Layout grid — classement / pilote / écuries / journal
+   Bento grid
    ========================================================================== */
 
 .control-layout {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "status" "duel" "pilote" "classement" "journal" "ecuries";
+  gap: var(--bento-gap);
   max-width: var(--container-fixed-l);
   margin: 0 auto;
-  padding: var(--space-4);
+  padding: var(--bento-gap);
 }
 
-@media (min-width: 1024px) {
+.tile--status { grid-area: status; }
+.duel { grid-area: duel; }
+.tile--pilote { grid-area: pilote; }
+.tile--classement { grid-area: classement; }
+.tile--ecuries { grid-area: ecuries; }
+.tile--journal { grid-area: journal; }
+
+@media (min-width: 768px) {
   .control-layout {
-    grid-template-columns: 1.1fr 0.9fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-areas:
+      "status     status"
+      "duel       pilote"
       "classement pilote"
-      "ecuries journal";
-    gap: var(--space-6);
-    padding: var(--space-6);
+      "ecuries    journal";
   }
-
-  .panel--classement { grid-area: classement; }
-  .panel--pilote { grid-area: pilote; }
-  .panel--ecuries { grid-area: ecuries; }
-  .panel--journal { grid-area: journal; }
 }
 
-/* ==========================================================================
-   Panel — shared shell for the four zones
-   ========================================================================== */
+@media (min-width: 1280px) {
+  .control-layout {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 3fr) minmax(0, 4fr);
+    grid-template-areas:
+      "status  pilote classement"
+      "duel    pilote classement"
+      "ecuries pilote journal";
+  }
+}
 
-.panel {
+.tile {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+  min-width: 0;
   padding: var(--space-4);
 }
 
-.panel__title {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-style: italic;
-  font-weight: var(--fw-black);
-  text-transform: uppercase;
-  border-bottom: 2px solid var(--color-text-primary);
-  padding-bottom: var(--space-2);
+@media (min-width: 1440px) {
+  .tile { padding: var(--space-5); }
 }
+
+.tile__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+}
+
+.tile__title { font-size: 2rem; }
+.tile__meta, .tile__foot { font-size: var(--fs-small); color: var(--tile-muted); }
+.tile__foot { display: flex; align-items: center; gap: var(--space-2); margin-top: auto; }
+
+.swatch { width: 0.75rem; height: 0.625rem; background: var(--color-primary); }
 
 /* ==========================================================================
-   State badges — Normal / Perte Attention / Fatigué / Épuisé
-   Color + text label together (never color alone).
+   Course — lap counter, facts, gap tracker
    ========================================================================== */
 
-.state-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  padding: 0.2rem var(--space-2);
-  border: 1px solid currentColor;
-  font-family: var(--font-display);
-  font-size: 0.7rem;
-  font-weight: var(--fw-bold);
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  white-space: nowrap;
+.tile--status { container-type: inline-size; gap: var(--space-5); }
+
+.live-flag { display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--fs-small); }
+.live-flag__dot { width: 0.5rem; height: 0.5rem; background: var(--color-primary); animation: live-blink 1.6s var(--ease-in-out-circ) infinite; }
+@keyframes live-blink { 50% { opacity: 0.2; } }
+
+.status-main { display: grid; gap: var(--space-5); }
+
+@container (min-width: 34rem) {
+  .status-main { grid-template-columns: minmax(0, 1fr) minmax(0, 16rem); align-items: end; }
 }
 
-.state-badge::before {
-  content: "";
-  width: 0.5rem;
-  height: 0.5rem;
-  background: currentColor;
-  flex-shrink: 0;
-}
+.lap-counter { display: flex; flex-direction: column; gap: var(--space-4); }
+.lap-counter__value { display: flex; align-items: baseline; gap: var(--space-2); padding-right: 0.1em; }
+.lap-counter__label { font-size: 2.25rem; color: var(--tile-muted); }
+.lap-counter__current { font-size: clamp(5.5rem, 4rem + 5vw, 9rem); line-height: 0.78; }
+.lap-counter__total { font-size: 2.75rem; color: var(--tile-muted); }
+.meter--laps { height: 1rem; --meter-fill: var(--color-primary); }
 
-.state-badge--normal { color: var(--color-state-normal); }
-.state-badge--perte-attention { color: var(--color-state-perte-attention); }
-.state-badge--fatigue { color: var(--color-state-fatigue); }
-.state-badge--epuise { color: var(--color-state-epuise); }
+.race-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+.race-facts dt { font-size: var(--fs-caption); color: var(--tile-muted); }
+.race-facts dd { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--space-2); font-size: 1.125rem; line-height: 1.3; }
+.race-facts dd small { font-family: var(--font-body); font-stretch: var(--stretch-standard); font-weight: var(--fw-regular); font-size: var(--fs-caption); color: var(--tile-muted); }
+.flag { width: 1rem; height: 0.6875rem; background: var(--state-normal); }
+
+.gap-track { display: flex; flex-direction: column; gap: var(--space-3); }
+.gap-track__caption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-1) var(--space-4); font-size: var(--fs-caption); color: var(--tile-muted); }
+.gap-track__legend { display: flex; gap: var(--space-3); }
+.gap-track__legend span { display: inline-flex; align-items: center; gap: var(--space-1); }
+.gap-track__legend span::before { content: ""; width: 0.625rem; height: 0.625rem; background: var(--key); }
+
+.gap-track__plot { position: relative; height: 5.25rem; margin-inline: var(--space-3); }
+.gap-track__plot::before { content: ""; position: absolute; inset: 2rem 0 auto; height: 1px; background: var(--color-neutral-700); }
+
+.gap-track__tick { position: absolute; top: 0; left: calc(var(--at) / 15 * 100%); width: 1px; height: 4.125rem; background: var(--tile-line); }
+.gap-track__tick span { position: absolute; top: 100%; transform: translateX(-50%); margin-top: 0.125rem; font-size: 0.6875rem; color: var(--tile-muted); white-space: nowrap; }
+
+.gap-track__pilote {
+  position: absolute;
+  left: calc(var(--at) / 15 * 100%);
+  transform: translateX(-50%);
+  padding: 0.125rem 0.3125rem;
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  background: var(--color-neutral-800);
+  color: var(--color-neutral-200);
+}
+.gap-track__pilote::after { content: ""; position: absolute; left: 50%; width: 1px; background: inherit; }
+.gap-track__pilote--top { top: 0; }
+.gap-track__pilote--top::after { top: 100%; height: calc(2rem - 100%); }
+.gap-track__pilote--bottom { top: 3rem; }
+.gap-track__pilote--bottom::after { bottom: 100%; height: calc(1rem - 1px); }
+.gap-track__pilote.is-selected { background: var(--color-primary); color: var(--color-text-inverted); }
+.gap-track__pilote.is-target { background: var(--color-neutral-0); color: var(--color-text-primary); }
 
 /* ==========================================================================
-   Classement — list/row pattern (sourced: avatar + name + arrow)
+   Duel — red portrait tiles (selected pilote vs target)
    ========================================================================== */
 
-.classement-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.duel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--bento-gap); }
+
+.duel-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  container-type: inline-size;
   display: flex;
   flex-direction: column;
+  min-height: 17rem;
+  aspect-ratio: 5 / 7;
 }
+
+.duel-card__numero {
+  position: absolute;
+  top: 0.04em;
+  right: 0.06em;
+  z-index: -1;
+  font-size: 72cqi;
+  line-height: 0.8;
+  color: rgba(255, 255, 255, 0.14);
+}
+
+.duel-card__portrait {
+  position: absolute;
+  inset: 9% 0 0;
+  z-index: -1;
+  width: 100%;
+  height: 91%;
+  object-fit: cover;
+  object-position: 50% 0;
+}
+
+.duel-card__top { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2); padding: var(--space-3); }
+.duel-card__role { font-size: var(--fs-caption); font-weight: var(--fw-medium); }
+.duel-card__state { padding: 0.25rem 0.4375rem; }
+
+.duel-card__band {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: auto;
+  padding: var(--space-3);
+  background: var(--color-glass-red);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(14px) saturate(1.2);
+}
+
+.duel-card__label { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-1); font-size: var(--fs-caption); }
+.duel-card__time { font-size: clamp(1.375rem, 15.5cqi, 3.5rem); line-height: 1; letter-spacing: -0.02em; }
+.duel-card__time span { color: rgba(255, 255, 255, 0.72); }
+
+.duel-card__name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--tile-line);
+  font-size: clamp(1.125rem, 9cqi, 1.75rem);
+}
+.duel-card__pos { padding: 0.1875rem 0.3125rem; font-size: 0.6875rem; font-style: normal; line-height: 1; background: var(--color-neutral-0); color: var(--color-primary-dark); }
+.duel-card__ecurie { margin-left: auto; font-family: var(--font-body); font-stretch: var(--stretch-standard); font-size: var(--fs-caption); font-style: normal; font-weight: var(--fw-regular); text-transform: none; color: var(--tile-muted); }
+
+.delta { display: inline-flex; align-items: center; gap: 0.3125rem; padding: 0.1875rem 0.375rem; font-size: 0.6875rem; line-height: 1; }
+.delta::before { content: ""; width: 0.5rem; height: 0.4375rem; background: var(--delta-color); }
+.delta--gain { --delta-color: var(--state-normal); }
+.delta--gain::before { clip-path: polygon(0 0, 100% 0, 50% 100%); }
+.delta--loss { --delta-color: var(--state-epuise); }
+.delta--loss::before { clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+
+/* ==========================================================================
+   Pilote — tall telemetry tile (State, Decorator, Command)
+   ========================================================================== */
+
+.tile--pilote { gap: var(--space-5); }
+
+.pilote-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: var(--space-1) var(--space-3); }
+.pilote-head__name { display: flex; align-items: baseline; gap: var(--space-2); font-size: 3.25rem; line-height: 0.85; }
+.pilote-head__numero { font-size: 1.75rem; color: var(--tile-muted); }
+.pilote-head__meta { grid-column: 1; font-size: var(--fs-small); color: var(--tile-muted); }
+.pilote-head .state-badge { grid-column: 2; grid-row: 1; font-size: var(--fs-small); }
+.pilote-head .state-badge::before { width: 0.75rem; height: 0.75rem; }
+
+.pilote-alert { padding: var(--space-3); font-size: var(--fs-small); background: var(--color-neutral-800); box-shadow: inset 3px 0 0 var(--state-fatigue); }
+
+.stat { display: flex; flex-direction: column; gap: var(--space-2); }
+.stat__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); font-size: var(--fs-small); }
+.stat__value { font-size: 1.5rem; line-height: 1; }
+.stat__value small { font-size: var(--fs-caption); color: var(--tile-muted); }
+.stat__note { font-size: var(--fs-caption); color: var(--tile-muted); }
+.decorator-list { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+.lap-chart { display: flex; flex-direction: column; gap: var(--space-2); flex: 1 1 auto; min-height: 12rem; max-height: 21rem; }
+.lap-chart__caption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-1) var(--space-3); font-size: var(--fs-small); }
+.lap-chart__legend { display: flex; flex-wrap: wrap; gap: var(--space-3); font-size: var(--fs-caption); color: var(--tile-muted); }
+.lap-chart__legend span { display: inline-flex; align-items: center; gap: var(--space-1); }
+.lap-chart__legend span::before { content: ""; width: 0.5rem; height: 0.5rem; background: var(--key); }
+
+.lap-chart__frame { position: relative; flex: 1 1 auto; min-height: 7rem; margin: var(--space-2) var(--space-2) 1.5rem 2.75rem; }
+.lap-chart__grid { position: absolute; left: 0; right: 0; top: calc(var(--y) * 1%); height: 1px; background: var(--tile-line); }
+.lap-chart__grid span { position: absolute; right: calc(100% + 0.5rem); transform: translateY(-50%); font-size: 0.6875rem; color: var(--tile-muted); font-variant-numeric: tabular-nums; }
+.lap-chart__x { position: absolute; top: calc(100% + 0.5rem); left: calc(var(--x) * 1%); transform: translateX(-50%); font-size: 0.6875rem; color: var(--tile-muted); }
+
+.lap-chart__line { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.lap-chart__line polyline { fill: none; stroke: var(--color-primary); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+
+.lap-chart__point { position: absolute; left: calc(var(--x) * 1%); top: calc(var(--y) * 1%); width: 1.5rem; height: 1.5rem; transform: translate(-50%, -50%); }
+.lap-chart__point::before { content: ""; position: absolute; top: 50%; left: 50%; width: 0.5rem; height: 0.5rem; transform: translate(-50%, -50%); background: var(--color-primary); box-shadow: 0 0 0 2px var(--color-surface-inverted); }
+.lap-chart__point.is-best::before { background: var(--color-neutral-0); }
+.lap-chart__point.is-last::before { width: 0.75rem; height: 0.75rem; }
+.lap-chart__point::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.25rem 0.375rem;
+  font-size: 0.6875rem;
+  white-space: nowrap;
+  background: var(--color-neutral-0);
+  color: var(--color-text-primary);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--duration-fast) var(--ease-out-expo);
+}
+.lap-chart__point:last-child::after { left: auto; right: 50%; transform: none; }
+.lap-chart__point:hover::after { opacity: 1; }
+
+.technique { display: flex; flex-direction: column; gap: var(--space-2); padding-top: var(--space-4); border-top: 1px solid var(--tile-line); }
+.technique__nom { font-size: 2rem; }
+.technique__desc { font-size: var(--fs-small); color: var(--tile-muted); }
+.technique__effet { font-size: var(--fs-small); }
+
+.pilote-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr)); gap: var(--space-2); }
+.pilote-actions .btn--primary { grid-column: 1 / -1; }
+
+.command-history { display: flex; flex-direction: column; gap: var(--space-2); margin-top: auto; padding-top: var(--space-4); border-top: 1px solid var(--tile-line); }
+.command-history__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.command-history__title { font-size: var(--fs-small); font-weight: var(--fw-medium); }
+.command-history__list li { display: flex; gap: var(--space-3); padding: 0.375rem 0; font-size: var(--fs-small); color: var(--tile-muted); }
+.command-history__list li:first-child { color: var(--color-text-inverted); }
+.command-history__time { min-width: 2.25rem; font-family: var(--font-number); font-stretch: var(--stretch-extended); font-weight: var(--fw-bold); }
+
+/* ==========================================================================
+   Classement live (Observer)
+   Rows share the tile height so the list meets the bottom edge.
+   ========================================================================== */
+
+.classement-list { display: flex; flex: 1 1 auto; flex-direction: column; }
 
 .classement-row {
   display: grid;
-  grid-template-columns: 2rem 1fr auto;
+  grid-template-columns: 2.25rem 2.5rem minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--space-3);
-  padding: var(--space-2) 0;
-  border-bottom: 1px solid var(--color-neutral-200);
-  transition: transform var(--duration-base) var(--ease-out-expo);
+  flex: 1 1 auto;
+  padding: var(--space-2);
+  border-top: 1px solid var(--tile-line);
 }
+.classement-row[aria-current="true"] { border-top-color: transparent; }
+.classement-row[aria-current="true"] + .classement-row { border-top-color: transparent; }
 
-.classement-row:hover {
-  transform: translateX(var(--space-2));
-}
+.classement-row__pos { display: flex; align-items: center; gap: 0.3125rem; font-size: 1rem; }
+.move { width: 0.5rem; height: 0.4375rem; }
+.move--up { background: var(--state-normal); clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.move--down { background: var(--state-epuise); clip-path: polygon(0 0, 100% 0, 50% 100%); }
 
-.classement-row__pos {
-  font-family: var(--font-number);
-  font-size: 1.125rem;
-  font-weight: var(--fw-black);
-  color: var(--color-text-muted);
-}
-
-.classement-row__identity {
-  min-width: 0;
-}
-
-.classement-row__numero {
-  font-family: var(--font-number);
-  font-size: 0.875rem;
-  color: var(--color-text-muted);
-}
-
-.classement-row__pseudo {
-  margin-left: var(--space-2);
-  font-family: var(--font-display);
-  font-weight: var(--fw-black);
-  font-style: italic;
-  text-transform: uppercase;
-}
-
-.classement-row__ecurie {
-  display: block;
-  margin-top: 0.125rem;
-  font-size: 0.75rem;
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-}
+.classement-row__identity { display: flex; flex-direction: column; gap: 0.1875rem; min-width: 0; }
+.classement-row__pseudo { font-size: 1.25rem; }
+.classement-row__numero { margin-left: var(--space-1); font-size: 0.9375rem; color: var(--tile-muted); }
+.classement-row__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--space-3); font-size: var(--fs-caption); color: var(--tile-muted); }
+.classement-row__meta .state-badge { color: var(--color-text-primary); }
+.classement-row.surface-ink .state-badge { color: var(--color-text-inverted); }
+.classement-row__gap { font-size: 0.875rem; font-variant-numeric: tabular-nums; text-align: right; }
 
 /* ==========================================================================
-   Fiche pilote sélectionné — flip card (portrait ↔ technique)
+   Écuries (Composite) — emphasis bars
    ========================================================================== */
-
-.pilote-flip {
-  perspective: 1200px;
-}
-
-.pilote-flip__inner {
-  position: relative;
-  min-height: 22rem;
-  transition: transform var(--duration-slow) var(--ease-in-out-circ);
-  transform-style: preserve-3d;
-}
-
-.pilote-flip:hover .pilote-flip__inner,
-.pilote-flip:focus-within .pilote-flip__inner {
-  transform: rotateY(180deg);
-}
-
-.pilote-flip__face {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  backface-visibility: hidden;
-  border: 1px solid var(--color-neutral-200);
-  background: var(--color-surface);
-  overflow: auto;
-}
-
-.pilote-flip__face--back {
-  transform: rotateY(180deg);
-  padding: var(--space-4);
-  gap: var(--space-3);
-}
-
-.pilote-flip__figure {
-  aspect-ratio: 16 / 9;
-  display: flex;
-  align-items: flex-end;
-  padding: var(--space-4);
-  background: var(--color-primary-gradient);
-}
-
-.pilote-flip__initial {
-  font-family: var(--font-display);
-  font-size: 4rem;
-  font-weight: var(--fw-black);
-  font-style: italic;
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.pilote-flip__identity {
-  padding: var(--space-4);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-}
-
-.pilote-flip__pseudo {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 1.75rem;
-  font-style: italic;
-  font-weight: var(--fw-black);
-  text-transform: uppercase;
-}
-
-.pilote-flip__meta {
-  margin: 0;
-  color: var(--color-text-muted);
-  font-size: 0.875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-}
-
-.pilote-flip__hint {
-  margin-top: auto;
-  padding: var(--space-2) var(--space-4);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-}
-
-.pilote-flip__technique-nom {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-style: italic;
-  font-weight: var(--fw-black);
-  color: var(--color-primary);
-  text-transform: uppercase;
-}
-
-.pilote-flip__technique-desc {
-  margin: 0;
-  font-size: 0.9375rem;
-  color: var(--color-text-muted);
-}
-
-.pilote-flip__technique-effet {
-  margin: 0;
-  padding-top: var(--space-2);
-  border-top: 1px solid var(--color-neutral-200);
-  font-size: 0.875rem;
-}
-
-/* Bonus / malus tags (Decorator) */
-.tag-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-
-.tag {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-1);
-  padding: 0.2rem var(--space-2);
-  font-size: 0.75rem;
-  font-weight: var(--fw-bold);
-  text-transform: uppercase;
-  border: 1px solid currentColor;
-}
-
-.tag--bonus { color: var(--color-success); }
-.tag--malus { color: var(--color-danger); }
-
-.pilote-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-
-/* ==========================================================================
-   Écuries — regroupement des pilotes (Composite)
-   ========================================================================== */
-
-.ecurie-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-}
 
 .ecurie-row {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: auto minmax(6.5rem, 11.5rem) minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
+  gap: var(--space-3);
   padding: var(--space-3) 0;
-  border-bottom: 1px solid var(--color-neutral-200);
+  border-top: 1px solid var(--tile-line);
 }
 
-.ecurie-row__nom {
-  font-family: var(--font-display);
-  font-weight: var(--fw-h5);
-  text-transform: uppercase;
-  min-width: 9rem;
-}
-
-.ecurie-row__pilotes {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-1);
-  flex: 1 1 12rem;
-}
-
-.ecurie-row__pilotes li {
-  font-size: 0.8125rem;
-  color: var(--color-text-muted);
-}
-
-.ecurie-row__pilotes li:not(:last-child)::after {
-  content: "\00B7"; /* middle dot */
-  margin-left: var(--space-1);
-  color: var(--color-neutral-200);
-}
-
-.ecurie-row__stat {
-  font-family: var(--font-number);
-  font-size: 0.875rem;
-  font-weight: var(--fw-bold);
-  color: var(--color-text-primary);
-  white-space: nowrap;
-}
+.ecurie-row__avatars { display: flex; gap: 2px; }
+.ecurie-row__identity { display: flex; flex-direction: column; gap: 0.1875rem; min-width: 0; }
+.ecurie-row__nom { font-size: 1.125rem; }
+.ecurie-row__pilotes { font-size: var(--fs-caption); color: var(--tile-muted); }
+.ecurie-row__measure { display: flex; align-items: center; gap: var(--space-2); }
+.ecurie-row__bar { width: calc(var(--v) / 10 * (100% - 2.5rem)); height: 0.625rem; background: var(--color-neutral-400); }
+.ecurie-row.is-highlighted .ecurie-row__bar { background: var(--color-primary); }
+.ecurie-row__stat { font-size: 0.875rem; }
 
 /* ==========================================================================
-   Journal / spectateurs — flux d'événements (Observer)
+   Journal de course (Observer)
    ========================================================================== */
 
-.journal-feed {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  max-height: 18rem;
-  overflow-y: auto;
-}
+.journal-feed { flex: 1 1 auto; min-height: 16rem; overflow-y: auto; contain: size; }
 
 .journal-entry {
-  display: flex;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
-  border-left: 3px solid var(--color-neutral-200);
-  font-size: 0.875rem;
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  gap: 0.125rem var(--space-3);
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--tile-line);
 }
-
-.journal-entry__time {
-  flex-shrink: 0;
-  font-family: var(--font-number);
-  color: var(--color-text-muted);
-}
-
-.journal-entry--action { border-left-color: var(--color-text-primary); }
-.journal-entry--warning { border-left-color: var(--color-state-perte-attention); }
-.journal-entry--boost { border-left-color: var(--color-success); }
-.journal-entry--save { border-left-color: var(--color-info); }
-
-/* ==========================================================================
-   Responsive tweaks
-   ========================================================================== */
-
-@media (max-width: 767px) {
-  .control-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .classement-row {
-    grid-template-columns: 1.5rem 3rem 1fr;
-  }
-
-  .classement-row__ecurie {
-    grid-column: 2 / span 1;
-  }
-}
+.journal-entry__time { grid-row: span 2; font-size: 0.8125rem; line-height: 1.5; }
+.journal-entry__type { font-size: var(--fs-caption); color: var(--tile-muted); }
+.journal-entry__text { font-size: var(--fs-small); }
+.journal-entry__text .state-badge { font-size: var(--fs-small); }

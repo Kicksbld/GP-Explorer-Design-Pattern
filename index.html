@@ -4,239 +4,446 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>GP Explorer — Salle de contrôle</title>
-  <meta name="description" content="Dashboard de simulation de course GP Explorer : classement live, fiche pilote, écuries et journal de course." />
+  <meta name="description" content="Dashboard de simulation de course GP Explorer : statut de course, duel en piste, télémétrie pilote, classement live, écuries et journal de course." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..900;1,62..125,400..900&display=swap" />
   <link rel="stylesheet" href="./design-system/dashboard.css" />
 </head>
 <body>
   <a class="skip-link" href="#main">Aller au contenu</a>
 
-  <header class="control-header">
-    <div class="control-header__brand">
-      <span class="control-header__brand-mark">GP Explorer</span>
-      <span class="control-header__brand-sub">Salle de contrôle</span>
-    </div>
+  <header class="control-header surface-ink">
+    <h1 class="brand">
+      <span class="brand__mark">GP Explorer</span>
+      <span class="brand__sub">Salle de contrôle</span>
+    </h1>
 
     <ol class="phase-stepper" aria-label="Phase du week-end de course">
       <li class="phase-stepper__item phase-stepper__item--done">
-        <span class="phase-stepper__dot" aria-hidden="true"></span>
-        Essais
+        <span class="phase-stepper__dot" aria-hidden="true"></span>Essais<span class="sr-only"> (terminé)</span>
+      </li>
+      <li class="phase-stepper__item phase-stepper__item--done">
+        <span class="phase-stepper__dot" aria-hidden="true"></span>Qualifs<span class="sr-only"> (terminé)</span>
       </li>
       <li class="phase-stepper__item" aria-current="step">
-        <span class="phase-stepper__dot" aria-hidden="true"></span>
-        Qualifs
-      </li>
-      <li class="phase-stepper__item">
-        <span class="phase-stepper__dot" aria-hidden="true"></span>
-        Course
+        <span class="phase-stepper__dot" aria-hidden="true"></span>Course
       </li>
     </ol>
 
-    <div class="control-toolbar">
+    <div class="control-toolbar" role="toolbar" aria-label="Contrôle de la course">
       <button type="button" class="btn btn--primary btn--sm" data-action="tour-suivant">Tour suivant</button>
       <button type="button" class="btn btn--secondary btn--sm" data-action="pause">Pause</button>
       <button type="button" class="btn btn--secondary btn--sm" data-action="sauvegarder">Sauvegarder</button>
-      <button type="button" class="btn btn--secondary btn--sm" data-action="restaurer">Restaurer</button>
+      <button type="button" class="btn btn--secondary btn--sm" data-action="restaurer">Restaurer T.10</button>
     </div>
   </header>
 
   <main id="main" class="control-layout">
-    <!-- Classement live — Observer -->
-    <section class="panel panel--classement card" aria-labelledby="classement-title">
-      <h2 class="panel__title" id="classement-title">Classement live</h2>
-      <ol class="classement-list" aria-live="polite" aria-label="Classement des pilotes en course">
-        <li class="classement-row" data-pilote-id="sch">
-          <span class="classement-row__pos">1</span>
-          <span class="classement-row__identity">
-            <span class="classement-row__numero">#19</span>
-            <span class="classement-row__pseudo">SCH</span>
-            <span class="classement-row__ecurie">Samsung</span>
+    <!-- Statut de course — RaceWeekend + RaceEngine -->
+    <section class="tile tile--status surface-ink" aria-labelledby="status-title">
+      <div class="tile__head">
+        <h2 class="tile__title" id="status-title">Course</h2>
+        <p class="live-flag"><span class="live-flag__dot" aria-hidden="true"></span>En direct</p>
+      </div>
+
+      <div class="status-main">
+        <div class="lap-counter">
+          <p class="lap-counter__value" aria-label="Tour 12 sur 20">
+            <span class="lap-counter__label" aria-hidden="true">Tour</span>
+            <span class="lap-counter__current" aria-hidden="true">12</span>
+            <span class="lap-counter__total" aria-hidden="true">/20</span>
+          </p>
+          <div class="meter meter--laps" style="--value: 12; --max: 20" role="progressbar"
+               aria-label="Progression de la course" aria-valuemin="0" aria-valuemax="20" aria-valuenow="12"></div>
+        </div>
+
+        <dl class="race-facts">
+          <div>
+            <dt>Drapeau</dt>
+            <dd><span class="flag" aria-hidden="true"></span>Vert</dd>
+          </div>
+          <div>
+            <dt>En piste</dt>
+            <dd>10/10</dd>
+          </div>
+          <div>
+            <dt>Meilleur tour</dt>
+            <dd>1:12.617 <small>Squeezie, T.11</small></dd>
+          </div>
+          <div>
+            <dt>Écart en tête</dt>
+            <dd>0.412 s</dd>
+          </div>
+        </dl>
+      </div>
+
+      <figure class="gap-track">
+        <figcaption class="gap-track__caption">
+          <span>Écart au leader, en secondes<span class="sr-only"> : le détail pilote par pilote est dans le classement live.</span></span>
+          <span class="gap-track__legend" aria-hidden="true">
+            <span style="--key: var(--color-primary)">19 SCH</span>
+            <span style="--key: var(--color-neutral-0)">14 Squeezie</span>
           </span>
-          <span class="state-badge state-badge--fatigue">Fatigué</span>
+        </figcaption>
+        <div class="gap-track__plot" aria-hidden="true">
+          <span class="gap-track__tick" style="--at: 0"><span>0</span></span>
+          <span class="gap-track__tick" style="--at: 5"><span>5</span></span>
+          <span class="gap-track__tick" style="--at: 10"><span>10</span></span>
+          <span class="gap-track__tick" style="--at: 15"><span>15</span></span>
+
+          <span class="gap-track__pilote gap-track__pilote--top is-selected" style="--at: 0">19</span>
+          <span class="gap-track__pilote gap-track__pilote--bottom is-target" style="--at: 0.412">14</span>
+          <span class="gap-track__pilote gap-track__pilote--top" style="--at: 1.870">21</span>
+          <span class="gap-track__pilote gap-track__pilote--bottom" style="--at: 3.244">17</span>
+          <span class="gap-track__pilote gap-track__pilote--top" style="--at: 4.019">99</span>
+          <span class="gap-track__pilote gap-track__pilote--bottom" style="--at: 5.530">10</span>
+          <span class="gap-track__pilote gap-track__pilote--top" style="--at: 8.112">31</span>
+          <span class="gap-track__pilote gap-track__pilote--bottom" style="--at: 9.405">48</span>
+          <span class="gap-track__pilote gap-track__pilote--top" style="--at: 11.267">42</span>
+          <span class="gap-track__pilote gap-track__pilote--bottom" style="--at: 13.890">51</span>
+        </div>
+      </figure>
+    </section>
+
+    <!-- Duel en piste — pilote sélectionné contre sa cible (Command) -->
+    <section class="duel" aria-labelledby="duel-title">
+      <h2 class="sr-only" id="duel-title">Duel en piste : SCH contre Squeezie</h2>
+
+      <article class="duel-card surface-red" data-pilote-id="sch">
+        <span class="duel-card__numero" aria-hidden="true">19</span>
+        <img class="duel-card__portrait" src="data/images/SCH.png" alt="" width="648" height="900" />
+        <div class="duel-card__top">
+          <p class="duel-card__role">Pilote sélectionné</p>
+          <span class="state-badge state-badge--fatigue duel-card__state surface-ink">Fatigué</span>
+        </div>
+        <div class="duel-card__band">
+          <p class="duel-card__label">
+            Dernier tour
+            <span class="delta delta--gain surface-ink">−0.231 s<span class="sr-only">, plus rapide qu'au tour 11</span></span>
+          </p>
+          <p class="duel-card__time">1:12<span>.904</span></p>
+          <p class="duel-card__name"><span class="duel-card__pos">P1</span>SCH<span class="duel-card__ecurie">Samsung</span></p>
+        </div>
+      </article>
+
+      <article class="duel-card surface-red" data-pilote-id="squeezie">
+        <span class="duel-card__numero" aria-hidden="true">14</span>
+        <img class="duel-card__portrait" src="data/images/Squeezie.png" alt="" width="636" height="900" />
+        <div class="duel-card__top">
+          <p class="duel-card__role">Cible</p>
+          <span class="state-badge state-badge--perte-attention duel-card__state surface-ink">Perte attention</span>
+        </div>
+        <div class="duel-card__band">
+          <p class="duel-card__label">
+            Dernier tour
+            <span class="delta delta--loss surface-ink">+0.699 s<span class="sr-only">, plus lent qu'au tour 11</span></span>
+          </p>
+          <p class="duel-card__time">1:13<span>.316</span></p>
+          <p class="duel-card__name"><span class="duel-card__pos">P2</span>Squeezie<span class="duel-card__ecurie">Netflix</span></p>
+        </div>
+      </article>
+    </section>
+
+    <!-- Pilote sélectionné — State + Decorator + Command -->
+    <section class="tile tile--pilote surface-ink" aria-labelledby="pilote-title">
+      <div class="pilote-head">
+        <h2 class="pilote-head__name" id="pilote-title">SCH <span class="pilote-head__numero">#19</span></h2>
+        <p class="pilote-head__meta">Samsung, classe Rappeur</p>
+        <span class="state-badge state-badge--fatigue">Fatigué</span>
+      </div>
+
+      <p class="pilote-alert">Risque de passer en état Épuisé si rien ne le soigne.</p>
+
+      <div class="stat">
+        <p class="stat__head"><span id="stat-vitesse">Vitesse</span><span class="stat__value">9 <small>/10</small></span></p>
+        <div class="meter" style="--value: 9" role="meter" aria-labelledby="stat-vitesse"
+             aria-valuemin="0" aria-valuemax="10" aria-valuenow="9"></div>
+        <ul class="decorator-list" aria-label="Calcul de la vitesse">
+          <li class="tag">Classe Rappeur <b>8</b></li>
+          <li class="tag tag--bonus">Bonus vitesse <b>+2</b></li>
+          <li class="tag tag--malus">Malus équipement <b>−1</b></li>
+        </ul>
+      </div>
+
+      <div class="stat">
+        <p class="stat__head"><span id="stat-controle">Contrôle</span><span class="stat__value">0 <small>/10</small></span></p>
+        <div class="meter" style="--value: 0" role="meter" aria-labelledby="stat-controle"
+             aria-valuemin="0" aria-valuemax="10" aria-valuenow="0"></div>
+        <p class="stat__note">Classe Rappeur : −2, bloqué à 0.</p>
+      </div>
+
+      <figure class="lap-chart">
+        <figcaption class="lap-chart__caption">
+          Temps au tour
+          <span class="lap-chart__legend">
+            <span style="--key: var(--color-primary)">Dernier 1:12.904</span>
+            <span style="--key: var(--color-neutral-0)">Meilleur 1:12.673, T.10</span>
+          </span>
+        </figcaption>
+        <div class="lap-chart__frame">
+          <span class="lap-chart__grid" style="--y: 0" aria-hidden="true"><span>1:15</span></span>
+          <span class="lap-chart__grid" style="--y: 40" aria-hidden="true"><span>1:14</span></span>
+          <span class="lap-chart__grid" style="--y: 80" aria-hidden="true"><span>1:13</span></span>
+          <span class="lap-chart__x" style="--x: 0" aria-hidden="true">T.1</span>
+          <span class="lap-chart__x" style="--x: 45.45" aria-hidden="true">T.6</span>
+          <span class="lap-chart__x" style="--x: 100" aria-hidden="true">T.12</span>
+
+          <svg class="lap-chart__line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <polyline points="0,5.2 9.09,43.6 18.18,61.8 27.27,75.2 36.36,80.1 45.45,68 54.55,86.2 63.64,79.5 72.73,72.5 81.82,93.1 90.91,74.6 100,83.8" />
+          </svg>
+
+          <ol class="lap-chart__points">
+            <li class="lap-chart__point" style="--x: 0; --y: 5.2" data-label="T.1 1:14.870"><span class="sr-only">Tour 1 : 1:14.870</span></li>
+            <li class="lap-chart__point" style="--x: 9.09; --y: 43.6" data-label="T.2 1:13.910"><span class="sr-only">Tour 2 : 1:13.910</span></li>
+            <li class="lap-chart__point" style="--x: 18.18; --y: 61.8" data-label="T.3 1:13.455"><span class="sr-only">Tour 3 : 1:13.455</span></li>
+            <li class="lap-chart__point" style="--x: 27.27; --y: 75.2" data-label="T.4 1:13.120"><span class="sr-only">Tour 4 : 1:13.120</span></li>
+            <li class="lap-chart__point" style="--x: 36.36; --y: 80.1" data-label="T.5 1:12.998"><span class="sr-only">Tour 5 : 1:12.998</span></li>
+            <li class="lap-chart__point" style="--x: 45.45; --y: 68" data-label="T.6 1:13.301"><span class="sr-only">Tour 6 : 1:13.301</span></li>
+            <li class="lap-chart__point" style="--x: 54.55; --y: 86.2" data-label="T.7 1:12.846"><span class="sr-only">Tour 7 : 1:12.846</span></li>
+            <li class="lap-chart__point" style="--x: 63.64; --y: 79.5" data-label="T.8 1:13.012"><span class="sr-only">Tour 8 : 1:13.012</span></li>
+            <li class="lap-chart__point" style="--x: 72.73; --y: 72.5" data-label="T.9 1:13.187"><span class="sr-only">Tour 9 : 1:13.187</span></li>
+            <li class="lap-chart__point is-best" style="--x: 81.82; --y: 93.1" data-label="T.10 1:12.673"><span class="sr-only">Tour 10 : 1:12.673, meilleur tour</span></li>
+            <li class="lap-chart__point" style="--x: 90.91; --y: 74.6" data-label="T.11 1:13.135"><span class="sr-only">Tour 11 : 1:13.135</span></li>
+            <li class="lap-chart__point is-last" style="--x: 100; --y: 83.8" data-label="T.12 1:12.904"><span class="sr-only">Tour 12 : 1:12.904</span></li>
+          </ol>
+        </div>
+      </figure>
+
+      <div class="technique">
+        <h3 class="technique__nom">C'est Ciao</h3>
+        <p class="technique__desc">Signature de SCH : il lâche la phrase culte et disparaît du rétroviseur adverse sans prévenir.</p>
+        <p class="technique__effet">Double instantanément l'adversaire ciblé et le fait passer en état Perte attention pendant 1 tour.</p>
+      </div>
+
+      <div class="pilote-actions">
+        <button type="button" class="btn btn--primary btn--sm" data-action="technique" data-pilote-id="sch" data-cible-id="squeezie">Utiliser C'est Ciao</button>
+        <button type="button" class="btn btn--secondary btn--sm" data-action="accelerer" data-pilote-id="sch">Accélérer</button>
+        <button type="button" class="btn btn--secondary btn--sm" data-action="depasser" data-pilote-id="sch" data-cible-id="squeezie">Dépasser Squeezie</button>
+      </div>
+
+      <div class="command-history">
+        <div class="command-history__head">
+          <h3 class="command-history__title">Commandes exécutées</h3>
+          <button type="button" class="btn btn--secondary btn--sm" data-action="annuler" data-pilote-id="sch">Annuler C'est Ciao</button>
+        </div>
+        <ol class="command-history__list">
+          <li><span class="command-history__time">T.12</span>Utiliser C'est Ciao sur Squeezie</li>
+          <li><span class="command-history__time">T.11</span>Accélérer</li>
+          <li><span class="command-history__time">T.8</span>Dépasser Karchez</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Classement live — Observer -->
+    <section class="tile tile--classement surface-white" aria-labelledby="classement-title">
+      <div class="tile__head">
+        <h2 class="tile__title" id="classement-title">Classement live</h2>
+        <p class="tile__meta">Écart au leader, tour 12</p>
+      </div>
+      <ol class="classement-list" aria-live="polite" aria-label="Classement des pilotes en course">
+        <li class="classement-row surface-ink" data-pilote-id="sch" aria-current="true">
+          <span class="classement-row__pos">1<span class="move move--up"></span><span class="sr-only">, gagne une place</span></span>
+          <span class="avatar"><img src="data/images/SCH.png" alt="" width="648" height="900" /></span>
+          <span class="classement-row__identity">
+            <span class="classement-row__pseudo">SCH<span class="classement-row__numero">#19</span></span>
+            <span class="classement-row__meta">Samsung <span class="state-badge state-badge--fatigue">Fatigué</span></span>
+          </span>
+          <span class="classement-row__gap">Leader</span>
         </li>
         <li class="classement-row" data-pilote-id="squeezie">
-          <span class="classement-row__pos">2</span>
+          <span class="classement-row__pos">2<span class="move move--down"></span><span class="sr-only">, perd une place</span></span>
+          <span class="avatar"><img src="data/images/Squeezie.png" alt="" width="636" height="900" loading="lazy" /></span>
           <span class="classement-row__identity">
-            <span class="classement-row__numero">#14</span>
-            <span class="classement-row__pseudo">Squeezie</span>
-            <span class="classement-row__ecurie">Netflix</span>
+            <span class="classement-row__pseudo">Squeezie<span class="classement-row__numero">#14</span></span>
+            <span class="classement-row__meta">Netflix <span class="state-badge state-badge--perte-attention">Perte attention</span></span>
           </span>
-          <span class="state-badge state-badge--normal">Normal</span>
+          <span class="classement-row__gap">+0.412</span>
         </li>
         <li class="classement-row" data-pilote-id="karchez">
           <span class="classement-row__pos">3</span>
+          <span class="avatar"><img src="data/images/KARCHEZ.png" alt="" loading="lazy" /></span>
           <span class="classement-row__identity">
-            <span class="classement-row__numero">#21</span>
-            <span class="classement-row__pseudo">Karchez</span>
-            <span class="classement-row__ecurie">CUPRA</span>
+            <span class="classement-row__pseudo">Karchez<span class="classement-row__numero">#21</span></span>
+            <span class="classement-row__meta">CUPRA <span class="state-badge state-badge--normal">Normal</span></span>
           </span>
-          <span class="state-badge state-badge--normal">Normal</span>
+          <span class="classement-row__gap">+1.870</span>
         </li>
         <li class="classement-row" data-pilote-id="ander">
           <span class="classement-row__pos">4</span>
+          <span class="avatar"><img src="data/images/Ander.png" alt="" loading="lazy" /></span>
           <span class="classement-row__identity">
-            <span class="classement-row__numero">#17</span>
-            <span class="classement-row__pseudo">Ander</span>
-            <span class="classement-row__ecurie">CUPRA</span>
+            <span class="classement-row__pseudo">Ander<span class="classement-row__numero">#17</span></span>
+            <span class="classement-row__meta">CUPRA <span class="state-badge state-badge--perte-attention">Perte attention</span></span>
           </span>
-          <span class="state-badge state-badge--perte-attention">Perte Attention</span>
+          <span class="classement-row__gap">+3.244</span>
         </li>
         <li class="classement-row" data-pilote-id="billy">
           <span class="classement-row__pos">5</span>
+          <span class="avatar"><img src="data/images/Bili.png" alt="" loading="lazy" /></span>
           <span class="classement-row__identity">
-            <span class="classement-row__numero">#99</span>
-            <span class="classement-row__pseudo">Billy</span>
-            <span class="classement-row__ecurie">Samsung</span>
+            <span class="classement-row__pseudo">Billy<span class="classement-row__numero">#99</span></span>
+            <span class="classement-row__meta">Samsung <span class="state-badge state-badge--fatigue">Fatigué</span></span>
           </span>
-          <span class="state-badge state-badge--fatigue">Fatigué</span>
+          <span class="classement-row__gap">+4.019</span>
         </li>
         <li class="classement-row" data-pilote-id="amine">
-          <span class="classement-row__pos">6</span>
+          <span class="classement-row__pos">6<span class="move move--up"></span><span class="sr-only">, gagne une place</span></span>
+          <span class="avatar"><img src="data/images/AMINE.png" alt="" loading="lazy" /></span>
           <span class="classement-row__identity">
-            <span class="classement-row__numero">#10</span>
-            <span class="classement-row__pseudo">Amine</span>
-            <span class="classement-row__ecurie">Netflix</span>
+            <span class="classement-row__pseudo">Amine<span class="classement-row__numero">#10</span></span>
+            <span class="classement-row__meta">Netflix <span class="state-badge state-badge--normal">Normal</span></span>
           </span>
-          <span class="state-badge state-badge--normal">Normal</span>
+          <span class="classement-row__gap">+5.530</span>
         </li>
         <li class="classement-row" data-pilote-id="maghla">
-          <span class="classement-row__pos">7</span>
+          <span class="classement-row__pos">7<span class="move move--down"></span><span class="sr-only">, perd une place</span></span>
+          <span class="avatar"><img src="data/images/Magla.png" alt="" loading="lazy" /></span>
           <span class="classement-row__identity">
-            <span class="classement-row__numero">#31</span>
-            <span class="classement-row__pseudo">Maghla</span>
-            <span class="classement-row__ecurie">Sol de Janeiro</span>
+            <span class="classement-row__pseudo">Maghla<span class="classement-row__numero">#31</span></span>
+            <span class="classement-row__meta">Sol de Janeiro <span class="state-badge state-badge--epuise">Épuisé</span></span>
           </span>
-          <span class="state-badge state-badge--epuise">Épuisé</span>
+          <span class="classement-row__gap">+8.112</span>
+        </li>
+        <li class="classement-row" data-pilote-id="lea-elui">
+          <span class="classement-row__pos">8<span class="move move--up"></span><span class="sr-only">, gagne une place</span></span>
+          <span class="avatar"><img src="data/images/LEA.png" alt="" loading="lazy" /></span>
+          <span class="classement-row__identity">
+            <span class="classement-row__pseudo">Lea Elui<span class="classement-row__numero">#48</span></span>
+            <span class="classement-row__meta">Sol de Janeiro <span class="state-badge state-badge--normal">Normal</span></span>
+          </span>
+          <span class="classement-row__gap">+9.405</span>
         </li>
         <li class="classement-row" data-pilote-id="ludwig">
-          <span class="classement-row__pos">8</span>
+          <span class="classement-row__pos">9<span class="move move--down"></span><span class="sr-only">, perd une place</span></span>
+          <span class="avatar"><img src="data/images/Ludwig.png" alt="" loading="lazy" /></span>
           <span class="classement-row__identity">
-            <span class="classement-row__numero">#42</span>
-            <span class="classement-row__pseudo">Ludwig</span>
-            <span class="classement-row__ecurie">The Crew Motorfest</span>
+            <span class="classement-row__pseudo">Ludwig<span class="classement-row__numero">#42</span></span>
+            <span class="classement-row__meta">The Crew Motorfest <span class="state-badge state-badge--normal">Normal</span></span>
           </span>
-          <span class="state-badge state-badge--normal">Normal</span>
+          <span class="classement-row__gap">+11.267</span>
+        </li>
+        <li class="classement-row" data-pilote-id="michael-reeves">
+          <span class="classement-row__pos">10</span>
+          <span class="avatar"><img src="data/images/Reeves.png" alt="" loading="lazy" /></span>
+          <span class="classement-row__identity">
+            <span class="classement-row__pseudo">Michael Reeves<span class="classement-row__numero">#51</span></span>
+            <span class="classement-row__meta">The Crew Motorfest <span class="state-badge state-badge--normal">Normal</span></span>
+          </span>
+          <span class="classement-row__gap">+13.890</span>
         </li>
       </ol>
     </section>
 
-    <!-- Pilote sélectionné — Decorator + Command -->
-    <section class="panel panel--pilote card" aria-labelledby="pilote-title">
-      <h2 class="panel__title" id="pilote-title">Pilote sélectionné</h2>
-
-      <div class="pilote-flip" tabindex="0" aria-label="Fiche de SCH — survoler ou activer pour voir la technique">
-        <div class="pilote-flip__inner">
-          <div class="pilote-flip__face pilote-flip__face--front">
-            <div class="pilote-flip__figure">
-              <span class="pilote-flip__initial" aria-hidden="true">S</span>
-            </div>
-            <div class="pilote-flip__identity">
-              <p class="pilote-flip__pseudo">SCH · #19</p>
-              <p class="pilote-flip__meta">Écurie Samsung · Rappeur</p>
-            </div>
-            <p class="pilote-flip__hint">Survoler pour voir la technique →</p>
-          </div>
-
-          <div class="pilote-flip__face pilote-flip__face--back">
-            <p class="pilote-flip__technique-nom">C'est Ciao</p>
-            <p class="pilote-flip__technique-desc">
-              Signature de SCH : il lâche la phrase culte et disparaît du rétroviseur adverse sans prévenir.
-            </p>
-            <p class="pilote-flip__technique-effet">
-              Effet : double instantanément l'adversaire ciblé et le fait passer en état
-              <strong>Perte Attention</strong> pendant 1 tour.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <ul class="tag-list" aria-label="Bonus et malus actifs">
-        <li class="tag tag--bonus">Bonus vitesse +2</li>
-        <li class="tag tag--malus">Malus maniabilité</li>
-      </ul>
-
-      <div class="pilote-actions">
-        <button type="button" class="btn btn--primary btn--sm" data-action="accelerer" data-pilote-id="sch">Accélérer</button>
-        <button type="button" class="btn btn--secondary btn--sm" data-action="depasser" data-pilote-id="sch">Dépasser</button>
-        <button type="button" class="btn btn--secondary btn--sm" data-action="technique" data-pilote-id="sch">Utiliser la technique</button>
-      </div>
-    </section>
-
     <!-- Écuries — Composite -->
-    <section class="panel panel--ecuries card" aria-labelledby="ecuries-title">
-      <h2 class="panel__title" id="ecuries-title">Écuries</h2>
+    <section class="tile tile--ecuries surface-white" aria-labelledby="ecuries-title">
+      <div class="tile__head">
+        <h2 class="tile__title" id="ecuries-title">Écuries</h2>
+        <p class="tile__meta">Vitesse moyenne des pilotes, sur 10</p>
+      </div>
       <ul class="ecurie-list">
-        <li class="ecurie-row" data-ecurie-id="samsung">
-          <span class="ecurie-row__nom">Samsung</span>
-          <ul class="ecurie-row__pilotes">
-            <li>SCH</li>
-            <li>Billy</li>
-          </ul>
-          <span class="ecurie-row__stat">Vmoy 8.2</span>
+        <li class="ecurie-row" data-ecurie-id="netflix" style="--v: 9.1">
+          <span class="ecurie-row__avatars" aria-hidden="true">
+            <span class="avatar avatar--sm"><img src="data/images/Squeezie.png" alt="" loading="lazy" /></span>
+            <span class="avatar avatar--sm"><img src="data/images/AMINE.png" alt="" loading="lazy" /></span>
+          </span>
+          <span class="ecurie-row__identity">
+            <span class="ecurie-row__nom">Netflix</span>
+            <span class="ecurie-row__pilotes">Squeezie, Amine</span>
+          </span>
+          <span class="ecurie-row__measure"><span class="ecurie-row__bar" aria-hidden="true"></span><span class="ecurie-row__stat">9.1</span></span>
         </li>
-        <li class="ecurie-row" data-ecurie-id="netflix">
-          <span class="ecurie-row__nom">Netflix</span>
-          <ul class="ecurie-row__pilotes">
-            <li>Squeezie</li>
-            <li>Amine</li>
-          </ul>
-          <span class="ecurie-row__stat">Vmoy 9.1</span>
+        <li class="ecurie-row" data-ecurie-id="cupra" style="--v: 8.7">
+          <span class="ecurie-row__avatars" aria-hidden="true">
+            <span class="avatar avatar--sm"><img src="data/images/KARCHEZ.png" alt="" loading="lazy" /></span>
+            <span class="avatar avatar--sm"><img src="data/images/Ander.png" alt="" loading="lazy" /></span>
+          </span>
+          <span class="ecurie-row__identity">
+            <span class="ecurie-row__nom">CUPRA</span>
+            <span class="ecurie-row__pilotes">Karchez, Ander</span>
+          </span>
+          <span class="ecurie-row__measure"><span class="ecurie-row__bar" aria-hidden="true"></span><span class="ecurie-row__stat">8.7</span></span>
         </li>
-        <li class="ecurie-row" data-ecurie-id="cupra">
-          <span class="ecurie-row__nom">CUPRA</span>
-          <ul class="ecurie-row__pilotes">
-            <li>Ander</li>
-            <li>Karchez</li>
-          </ul>
-          <span class="ecurie-row__stat">Vmoy 8.7</span>
+        <li class="ecurie-row is-highlighted" data-ecurie-id="samsung" style="--v: 8.2">
+          <span class="ecurie-row__avatars" aria-hidden="true">
+            <span class="avatar avatar--sm"><img src="data/images/SCH.png" alt="" loading="lazy" /></span>
+            <span class="avatar avatar--sm"><img src="data/images/Bili.png" alt="" loading="lazy" /></span>
+          </span>
+          <span class="ecurie-row__identity">
+            <span class="ecurie-row__nom">Samsung</span>
+            <span class="ecurie-row__pilotes">SCH, Billy</span>
+          </span>
+          <span class="ecurie-row__measure"><span class="ecurie-row__bar" aria-hidden="true"></span><span class="ecurie-row__stat">8.2</span></span>
         </li>
-        <li class="ecurie-row" data-ecurie-id="alpine">
-          <span class="ecurie-row__nom">Alpine</span>
-          <ul class="ecurie-row__pilotes">
-            <li>Ana</li>
-            <li>Kaatsup</li>
-          </ul>
-          <span class="ecurie-row__stat">Vmoy 7.6</span>
+        <li class="ecurie-row" data-ecurie-id="sol-de-janeiro" style="--v: 7.8">
+          <span class="ecurie-row__avatars" aria-hidden="true">
+            <span class="avatar avatar--sm"><img src="data/images/Magla.png" alt="" loading="lazy" /></span>
+            <span class="avatar avatar--sm"><img src="data/images/LEA.png" alt="" loading="lazy" /></span>
+          </span>
+          <span class="ecurie-row__identity">
+            <span class="ecurie-row__nom">Sol de Janeiro</span>
+            <span class="ecurie-row__pilotes">Maghla, Lea Elui</span>
+          </span>
+          <span class="ecurie-row__measure"><span class="ecurie-row__bar" aria-hidden="true"></span><span class="ecurie-row__stat">7.8</span></span>
         </li>
-        <li class="ecurie-row" data-ecurie-id="subway">
-          <span class="ecurie-row__nom">Subway</span>
-          <ul class="ecurie-row__pilotes">
-            <li>MisterV</li>
-            <li>PLK</li>
-          </ul>
-          <span class="ecurie-row__stat">Vmoy 7.9</span>
+        <li class="ecurie-row" data-ecurie-id="the-crew-motorfest" style="--v: 6.9">
+          <span class="ecurie-row__avatars" aria-hidden="true">
+            <span class="avatar avatar--sm"><img src="data/images/Ludwig.png" alt="" loading="lazy" /></span>
+            <span class="avatar avatar--sm"><img src="data/images/Reeves.png" alt="" loading="lazy" /></span>
+          </span>
+          <span class="ecurie-row__identity">
+            <span class="ecurie-row__nom">The Crew Motorfest</span>
+            <span class="ecurie-row__pilotes">Ludwig, Michael Reeves</span>
+          </span>
+          <span class="ecurie-row__measure"><span class="ecurie-row__bar" aria-hidden="true"></span><span class="ecurie-row__stat">6.9</span></span>
         </li>
       </ul>
+      <p class="tile__foot"><span class="swatch" aria-hidden="true"></span>Samsung, l'écurie du pilote sélectionné</p>
     </section>
 
-    <!-- Journal / spectateurs — Observer -->
-    <section class="panel panel--journal card" aria-labelledby="journal-title">
-      <h2 class="panel__title" id="journal-title">Journal de course</h2>
-      <ul class="journal-feed" aria-live="polite" aria-label="Événements de course en direct">
-        <li class="journal-entry journal-entry--action">
+    <!-- Journal de course — Observer -->
+    <section class="tile tile--journal surface-white" aria-labelledby="journal-title">
+      <div class="tile__head">
+        <h2 class="tile__title" id="journal-title">Journal de course</h2>
+        <p class="tile__meta">Du plus récent au plus ancien</p>
+      </div>
+      <ol class="journal-feed" aria-live="polite" aria-label="Événements de course en direct" tabindex="0">
+        <li class="journal-entry">
           <span class="journal-entry__time">T.12</span>
-          <span>SCH double Squeezie avec « C'est Ciao » !</span>
+          <span class="journal-entry__type">Dépassement</span>
+          <p class="journal-entry__text">SCH double Squeezie avec « C'est Ciao ». Squeezie passe en <span class="state-badge state-badge--perte-attention">Perte attention</span></p>
         </li>
-        <li class="journal-entry journal-entry--warning">
+        <li class="journal-entry">
           <span class="journal-entry__time">T.12</span>
-          <span>Karchez inflige Perte Attention à tous les pilotes proches.</span>
+          <span class="journal-entry__type">Technique</span>
+          <p class="journal-entry__text">Karchez lance « Ombre du Boss » : Ander passe en <span class="state-badge state-badge--perte-attention">Perte attention</span></p>
         </li>
-        <li class="journal-entry journal-entry--boost">
+        <li class="journal-entry">
           <span class="journal-entry__time">T.11</span>
-          <span>Squeezie active « Keep Pushing » : retour à l'état Normal.</span>
+          <span class="journal-entry__type">Technique</span>
+          <p class="journal-entry__text">Squeezie active « Keep Pushing » et signe le meilleur tour en 1:12.617.</p>
         </li>
-        <li class="journal-entry journal-entry--save">
+        <li class="journal-entry">
+          <span class="journal-entry__time">T.11</span>
+          <span class="journal-entry__type">Classement</span>
+          <p class="journal-entry__text">Maghla perd une place face à Amine, état <span class="state-badge state-badge--epuise">Épuisé</span></p>
+        </li>
+        <li class="journal-entry">
           <span class="journal-entry__time">T.10</span>
-          <span>Course sauvegardée (checkpoint).</span>
+          <span class="journal-entry__type">Sauvegarde</span>
+          <p class="journal-entry__text">Course sauvegardée. Point de restauration disponible : T.10.</p>
         </li>
-        <li class="journal-entry journal-entry--warning">
+        <li class="journal-entry">
           <span class="journal-entry__time">T.9</span>
-          <span>Billy passe en état Fatigué après « Mode Deter ».</span>
+          <span class="journal-entry__type">État</span>
+          <p class="journal-entry__text">Billy passe en <span class="state-badge state-badge--fatigue">Fatigué</span> après « Mode Deter ».</p>
         </li>
-        <li class="journal-entry journal-entry--action">
+        <li class="journal-entry">
           <span class="journal-entry__time">T.8</span>
-          <span>Ander enchaîne un « Olé Drift » en sortie de virage.</span>
+          <span class="journal-entry__type">Technique</span>
+          <p class="journal-entry__text">Ander enchaîne un « Olé Drift » en sortie de virage.</p>
         </li>
-      </ul>
+      </ol>
     </section>
   </main>
 </body>

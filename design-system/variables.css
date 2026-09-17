@@ -18,7 +18,9 @@
   --color-neutral-100: #E1E1E1;              /* sourced: page background */
   --color-neutral-200: #C9C9C9;              /* inferred (interpolated) */
   --color-neutral-400: #9B9A9A;              /* sourced: "gray-400", placeholders */
+  --color-neutral-600: #5E5D5D;              /* inferred — muted text on light surfaces (4.9:1 on #E1E1E1) */
   --color-neutral-700: #4A4A4A;              /* inferred (interpolated) */
+  --color-neutral-800: #333333;              /* inferred — hairlines and tracks on ink surfaces */
   --color-neutral-900: #222222;              /* sourced: "gray-900", ink/text */
 
   /* ---------- Status colors ---------- */
@@ -28,32 +30,56 @@
   --color-info:    #0004F4;                  /* sourced: "blue-400", form-select caret / icon hover */
 
   /* ---------- State pattern colors (Pilote states) ----------
-     Inferred additions — not present on the source site, designed to
-     stay within the brand's flat/high-contrast palette. Reuses
-     --color-success/--color-danger where the semantics already match. */
-  --color-state-normal: var(--color-success);        /* Normal */
-  --color-state-perte-attention: #6D28D9;             /* Perte Attention — inferred violet */
-  --color-state-fatigue: #F97316;                     /* Fatigué — inferred orange */
-  --color-state-epuise: var(--color-danger);          /* Épuisé */
+     Inferred additions, validated as one set with the dataviz palette
+     validator (lightness band, chroma, CVD separation, normal vision).
+     Fatigué moved from #F97316 to amber: the orange sat ΔE 13.8 from
+     Épuisé, below the 15 floor. Amber is 2.9:1 on white, so a state is
+     always rendered with its glyph shape + text label, never color alone.
+     Ink surfaces get their own validated steps (all ≥ 3:1 on #222). */
+  --color-state-normal: var(--color-success);          /* Normal */
+  --color-state-perte-attention: #6D28D9;               /* Perte Attention */
+  --color-state-fatigue: #CA8A04;                       /* Fatigué */
+  --color-state-epuise: var(--color-danger);            /* Épuisé */
+
+  --color-state-normal-on-dark: #2E9E4F;
+  --color-state-perte-attention-on-dark: #8B5CF6;
+  --color-state-fatigue-on-dark: #BC8A00;
+  --color-state-epuise-on-dark: #D4301B;
 
   /* ---------- Backgrounds / surfaces ---------- */
   --color-bg: var(--color-neutral-100);
   --color-surface: var(--color-neutral-0);
   --color-surface-inverted: var(--color-neutral-900);
+  --color-glass-red: rgba(178, 7, 16, 0.55);  /* inferred — frosted band laid over red portrait frames */
 
   /* ---------- Text ---------- */
   --color-text-primary: var(--color-neutral-900);
   --color-text-inverted: var(--color-neutral-0);
-  --color-text-muted: var(--color-neutral-400);
+  --color-text-muted: var(--color-neutral-600);          /* was neutral-400: 2.8:1 on white, failed AA */
+  --color-text-muted-inverted: var(--color-neutral-400); /* 5.7:1 on ink */
   --color-text-link: var(--color-primary);
+  --color-placeholder: var(--color-neutral-400);         /* sourced */
 
-  /* ---------- Typography: families ---------- */
-  --font-display: "LateralVariable", "Archivo Expanded", "Oswald", sans-serif; /* fallback chain: compressed/condensed grotesk */
-  --font-body: "LateralVariable", "Archivo Expanded", "Oswald", sans-serif;
-  --font-number: "Blutter", "Archivo Expanded", sans-serif;
+  /* ---------- Lines ---------- */
+  --color-line: var(--color-neutral-200);
+  --color-line-inverted: var(--color-neutral-800);
+
+  /* ---------- Typography: families ----------
+     LateralVariable and Blutter are licensed faces. Archivo (Google Fonts,
+     loaded in index.html) is the stand-in: its wdth axis reproduces
+     Lateral's UltraCompressed / Standard / Extended cuts. */
+  --font-display: "LateralVariable", "Archivo", "Oswald", sans-serif;
+  --font-body: "LateralVariable", "Archivo", "Oswald", sans-serif;
+  --font-number: "Blutter", "Archivo", sans-serif;
+
+  /* ---------- Typography: widths ---------- */
+  --stretch-compressed: 62%;   /* display headings, lap counter, racing numbers */
+  --stretch-standard: 100%;    /* body copy */
+  --stretch-extended: 125%;    /* timing figures (lap times, gaps) */
 
   /* ---------- Typography: weights ---------- */
   --fw-regular: 400;
+  --fw-medium: 600;
   --fw-bold: 700;
   --fw-black: 800;
 
@@ -61,6 +87,8 @@
      Headings use clamp() to interpolate fluidly between the exact
      breakpoint values captured from the source stylesheet
      (s: 768px and l: 1280px), instead of jumping in hard steps. */
+  --fs-caption: 0.75rem;  /* 12px — dense data labels */
+  --fs-small: 0.875rem;   /* 14px */
   --fs-body: 1rem;        /* 16px, sourced */
   --lh-body: 1.5;
 
@@ -89,6 +117,7 @@
   --space-2: 0.5rem;    /* 8px */
   --space-3: 0.75rem;   /* 12px */
   --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
   --space-6: 1.5rem;    /* 24px */
   --space-8: 2rem;      /* 32px */
   --space-12: 3rem;     /* 48px */
@@ -138,6 +167,7 @@
   --container-fixed-l: 1640px; /* fixed max-width used from l: upward, sourced */
 
   --gutter: var(--space-2);
+  --bento-gap: var(--space-2); /* inferred — tile spacing on dashboards, reads as a thin canvas frame */
 }
 
 @media (min-width: 1280px) {
