@@ -1,9 +1,8 @@
 // Pattern: Singleton
 // Point d'accès unique aux données de data/db.json (pilotes + ecuries).
+// Chargé via fetch() car ce module tourne dans le navigateur (dashboard index.html).
 
-import { readFile } from 'node:fs/promises';
-
-const DEFAULT_DB_URL = new URL('../../data/db.json', import.meta.url);
+const DEFAULT_DB_URL = './data/db.json';
 
 export class PiloteDatabase {
   static #instance = null;
@@ -26,8 +25,8 @@ export class PiloteDatabase {
   }
 
   async load(url = DEFAULT_DB_URL) {
-    const contenu = await readFile(url, 'utf-8');
-    const { pilotes = [], ecuries = [] } = JSON.parse(contenu);
+    const reponse = await fetch(url);
+    const { pilotes = [], ecuries = [] } = await reponse.json();
     this.#pilotes = pilotes;
     this.#ecuries = ecuries;
   }

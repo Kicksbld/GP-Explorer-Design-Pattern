@@ -48,13 +48,14 @@ const EFFETS_TECHNIQUE = {
 };
 
 export class Pilote {
-  constructor({ id, pseudo, numero, ecurie, classe, technique, stats = {} }) {
+  constructor({ id, pseudo, numero, ecurie, classe, technique, image, stats = {} }) {
     this.id = id;
     this.pseudo = pseudo;
     this.numero = numero;
     this.ecurie = ecurie;
     this.classe = classe;
     this.technique = technique;
+    this.image = image;
     this.stats = { vitesse: 1, controle: 1, ...stats };
     this.state = new NormalState();
   }

@@ -16,7 +16,21 @@ async function main() {
 
   const weekend = new RaceWeekend(engine);
 
-  // TODO: démo — dérouler essais/qualifs/course, quelques tours, quelques techniques
+  // TODO (étape RaceEngine) : dérouler essais/qualifs/course via weekend/engine.tourSuivant()
+  // En attendant, on pousse un premier classement pour vérifier l'Observer sur le dashboard :
+  const classement = pilotes
+    .slice()
+    .sort((a, b) => b.getVitesse() - a.getVitesse())
+    .map((p, index) => ({
+      position: index + 1,
+      id: p.id,
+      pseudo: p.pseudo,
+      numero: p.numero,
+      image: p.image,
+      ecurieNom: db.getEcurieById(p.ecurie)?.nom ?? p.ecurie,
+      stateNom: p.state.nom,
+    }));
+  engine.classement.setClassement(classement);
 }
 
 main();

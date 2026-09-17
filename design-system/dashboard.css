@@ -116,7 +116,7 @@ img { display: block; max-width: 100%; }
 .tile--status { grid-area: status; }
 .duel { grid-area: duel; }
 .tile--pilote { grid-area: pilote; }
-.tile--classement { grid-area: classement; }
+.tile--classement { grid-area: classement; align-self: start; }
 .tile--ecuries { grid-area: ecuries; }
 .tile--journal { grid-area: journal; }
 
@@ -379,7 +379,7 @@ img { display: block; max-width: 100%; }
    Rows share the tile height so the list meets the bottom edge.
    ========================================================================== */
 
-.classement-list { display: flex; flex: 1 1 auto; flex-direction: column; }
+.classement-list { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; max-height: 24rem; overflow-y: auto; }
 
 .classement-row {
   display: grid;
