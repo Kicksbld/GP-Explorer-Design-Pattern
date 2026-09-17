@@ -38,6 +38,10 @@ export class PiloteDecorator {
     return this.pilote.state;
   }
 
+  get stats() {
+    return this.pilote.stats;
+  }
+
   setState(state) {
     this.pilote.setState(state);
   }

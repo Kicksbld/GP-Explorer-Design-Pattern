@@ -30,6 +30,12 @@ export class RaceEngine {
     this.#publierClassement();
   }
 
+  // Republie le classement sans faire avancer le tour — utilisé après une
+  // restauration Memento, où les stats/états changent hors du cycle normal.
+  rafraichirClassement() {
+    this.#publierClassement();
+  }
+
   // Déclenche la technique d'un pilote. Si l'effet renvoie un pilote décoré
   // (ex: MalusEquipementDecorator sur la cible), on le substitue dans le
   // tableau pour que le reste du moteur (classement, ticks...) utilise

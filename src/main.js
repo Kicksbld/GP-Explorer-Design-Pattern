@@ -8,6 +8,19 @@ import { AccelererCommand } from './command/commands/AccelererCommand.js';
 import { DepasserCommand } from './command/commands/DepasserCommand.js';
 import { UtiliserTechniqueCommand } from './command/commands/UtiliserTechniqueCommand.js';
 import { EcurieComposite } from './composite/EcurieComposite.js';
+import { DirectionCourseProxy } from './proxy/DirectionCourseProxy.js';
+import { CourseCaretaker } from './memento/CourseCaretaker.js';
+import { NormalState } from './state/NormalState.js';
+import { PerteAttentionState } from './state/PerteAttentionState.js';
+import { FatigueState } from './state/FatigueState.js';
+import { EpuiseState } from './state/EpuiseState.js';
+
+const CLASSES_ETAT = {
+  Normal: NormalState,
+  'Perte Attention': PerteAttentionState,
+  Fatigué: FatigueState,
+  Épuisé: EpuiseState,
+};
 
 const LIBELLES_PHASE = {
   [PHASES.ESSAIS]: 'Essais',
@@ -133,6 +146,56 @@ function mettreAJourEcuries(engine, db) {
   }));
 }
 
+function mettreAJourDirectionControle(direction) {
+  const liste = document.querySelector('.direction-control__list');
+  if (!liste) return;
+
+  const recents = direction.verdicts.slice(-5).reverse();
+  liste.replaceChildren(...recents.map(({ autorise, commande, motif }) => {
+    const li = document.createElement('li');
+    li.className = 'direction-control__entry';
+
+    const verdict = document.createElement('span');
+    verdict.className = `direction-verdict direction-verdict--${autorise ? 'ok' : 'refused'}`;
+    verdict.textContent = autorise ? 'Validée' : 'Refusée';
+
+    const texte = document.createElement('span');
+    texte.className = 'direction-control__text';
+    texte.textContent = `${commande} — ${motif}`;
+
+    li.append(verdict, texte);
+    return li;
+  }));
+}
+
+// Snapshot Memento : uniquement des données brutes (structuredClone-compatibles),
+// jamais les instances Pilote/State elles-mêmes.
+function capturerEtat(engine, weekend) {
+  return {
+    tour: engine.tour,
+    phase: weekend.phase,
+    pilotes: engine.pilotes.map((p) => ({
+      id: p.id,
+      vitesse: p.stats.vitesse,
+      controle: p.stats.controle,
+      etat: p.state.nom,
+    })),
+  };
+}
+
+function restaurerEtat(engine, weekend, etat) {
+  engine.tour = etat.tour;
+  weekend.phase = etat.phase;
+  etat.pilotes.forEach((snapshot) => {
+    const pilote = engine.pilotes.find((p) => p.id === snapshot.id);
+    if (!pilote) return;
+    pilote.stats.vitesse = snapshot.vitesse;
+    pilote.stats.controle = snapshot.controle;
+    const ClasseEtat = CLASSES_ETAT[snapshot.etat] ?? NormalState;
+    pilote.setState(new ClasseEtat());
+  });
+}
+
 async function main() {
   const db = PiloteDatabase.getInstance();
   await db.load();
@@ -143,11 +206,14 @@ async function main() {
   engine.classement.subscribe(new Spectator('Tribune Principale'));
 
   const weekend = new RaceWeekend(engine);
+  const direction = new DirectionCourseProxy(engine);
+  const caretaker = new CourseCaretaker();
 
   engine.tourSuivant();
   mettreAJourPhaseStepper(weekend.phase);
   mettreAJourHistorique(engine);
   mettreAJourEcuries(engine, db);
+  mettreAJourDirectionControle(direction);
 
   document.querySelector('[data-action="tour-suivant"]')?.addEventListener('click', () => {
     engine.tourSuivant();
@@ -159,14 +225,26 @@ async function main() {
     mettreAJourPhaseStepper(weekend.phase);
   });
 
+  // Les actions de course passent par la Proxy (droit de commissaire) avant
+  // d'atteindre le RaceEngine : une action refusée n'apparaît que dans le
+  // panneau "Direction de course", jamais dans l'historique des commandes.
+  function executerViaDirection(command) {
+    try {
+      direction.executer(command);
+    } catch {
+      // refus déjà consigné dans direction.verdicts
+    }
+    mettreAJourHistorique(engine);
+    mettreAJourEcuries(engine, db);
+    mettreAJourDirectionControle(direction);
+  }
+
   document.querySelectorAll('[data-action="technique"]').forEach((bouton) => {
     bouton.addEventListener('click', () => {
       const pilote = engine.pilotes.find((p) => p.id === bouton.dataset.piloteId);
       const cible = engine.pilotes.find((p) => p.id === bouton.dataset.cibleId);
       if (pilote) {
-        engine.executer(new UtiliserTechniqueCommand(engine, pilote, cible));
-        mettreAJourHistorique(engine);
-        mettreAJourEcuries(engine, db);
+        executerViaDirection(new UtiliserTechniqueCommand(engine, pilote, cible));
       }
     });
   });
@@ -175,9 +253,7 @@ async function main() {
     bouton.addEventListener('click', () => {
       const pilote = engine.pilotes.find((p) => p.id === bouton.dataset.piloteId);
       if (pilote) {
-        engine.executer(new AccelererCommand(pilote));
-        mettreAJourHistorique(engine);
-        mettreAJourEcuries(engine, db);
+        executerViaDirection(new AccelererCommand(pilote));
       }
     });
   });
@@ -187,9 +263,7 @@ async function main() {
       const pilote = engine.pilotes.find((p) => p.id === bouton.dataset.piloteId);
       const cible = engine.pilotes.find((p) => p.id === bouton.dataset.cibleId);
       if (pilote) {
-        engine.executer(new DepasserCommand(pilote, cible));
-        mettreAJourHistorique(engine);
-        mettreAJourEcuries(engine, db);
+        executerViaDirection(new DepasserCommand(pilote, cible));
       }
     });
   });
@@ -198,6 +272,26 @@ async function main() {
     bouton.addEventListener('click', () => {
       engine.annulerDerniere();
       mettreAJourHistorique(engine);
+      mettreAJourEcuries(engine, db);
+    });
+  });
+
+  document.querySelectorAll('[data-action="sauvegarder"]').forEach((bouton) => {
+    bouton.addEventListener('click', () => {
+      const etat = capturerEtat(engine, weekend);
+      caretaker.sauvegarder(etat);
+      const restaurerBtn = document.querySelector('[data-action="restaurer"]');
+      if (restaurerBtn) restaurerBtn.textContent = `Restaurer T.${etat.tour}`;
+    });
+  });
+
+  document.querySelectorAll('[data-action="restaurer"]').forEach((bouton) => {
+    bouton.addEventListener('click', () => {
+      const etat = caretaker.restaurer();
+      if (!etat) return;
+      restaurerEtat(engine, weekend, etat);
+      engine.rafraichirClassement();
+      mettreAJourPhaseStepper(weekend.phase);
       mettreAJourEcuries(engine, db);
     });
   });
