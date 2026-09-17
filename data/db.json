@@ -1,17 +1,101 @@
 {
   "ecuries": [
-    { "id": "netflix", "nom": "Netflix", "pilotes": ["squeezie", "amine"] },
-    { "id": "lego-racing-team", "nom": "LEGO Racing Team", "pilotes": ["djilsi", "maxime-biaggi"] },
-    { "id": "sol-de-janeiro", "nom": "Sol de Janeiro", "pilotes": ["maghla", "lea-elui"] },
-    { "id": "andros-be-nuts", "nom": "Andros Be Nuts !", "pilotes": ["theodort", "mastu"] },
-    { "id": "subway", "nom": "Subway", "pilotes": ["mister-v", "plk"] },
-    { "id": "lofi-girl-gentle-mates", "nom": "Lofi Girl M8", "pilotes": ["gotaga", "nikof"] },
-    { "id": "samsung", "nom": "Samsung", "pilotes": ["sch", "billy"] },
-    { "id": "erborian", "nom": "Erborian", "pilotes": ["baghera", "cocottee"] },
-    { "id": "alpine", "nom": "Alpine", "pilotes": ["ana", "kaatsup"] },
-    { "id": "cupra", "nom": "CUPRA", "pilotes": ["ander", "karchez"] },
-    { "id": "the-crew-motorfest", "nom": "The Crew Motorfest", "pilotes": ["ludwig", "michael-reeves"] },
-    { "id": "durex", "nom": "Durex", "pilotes": ["houdi", "anyme"] }
+    {
+      "id": "netflix",
+      "nom": "Netflix",
+      "pilotes": [
+        "squeezie",
+        "amine"
+      ]
+    },
+    {
+      "id": "lego-racing-team",
+      "nom": "LEGO Racing Team",
+      "pilotes": [
+        "djilsi",
+        "maxime-biaggi"
+      ]
+    },
+    {
+      "id": "sol-de-janeiro",
+      "nom": "Sol de Janeiro",
+      "pilotes": [
+        "maghla",
+        "lea-elui"
+      ]
+    },
+    {
+      "id": "andros-be-nuts",
+      "nom": "Andros Be Nuts !",
+      "pilotes": [
+        "theodort",
+        "mastu"
+      ]
+    },
+    {
+      "id": "subway",
+      "nom": "Subway",
+      "pilotes": [
+        "mister-v",
+        "plk"
+      ]
+    },
+    {
+      "id": "lofi-girl-gentle-mates",
+      "nom": "Lofi Girl M8",
+      "pilotes": [
+        "gotaga",
+        "nikof"
+      ]
+    },
+    {
+      "id": "samsung",
+      "nom": "Samsung",
+      "pilotes": [
+        "sch",
+        "billy"
+      ]
+    },
+    {
+      "id": "erborian",
+      "nom": "Erborian",
+      "pilotes": [
+        "baghera",
+        "cocottee"
+      ]
+    },
+    {
+      "id": "alpine",
+      "nom": "Alpine",
+      "pilotes": [
+        "ana",
+        "kaatsup"
+      ]
+    },
+    {
+      "id": "cupra",
+      "nom": "CUPRA",
+      "pilotes": [
+        "ander",
+        "karchez"
+      ]
+    },
+    {
+      "id": "the-crew-motorfest",
+      "nom": "The Crew Motorfest",
+      "pilotes": [
+        "ludwig",
+        "michael-reeves"
+      ]
+    },
+    {
+      "id": "durex",
+      "nom": "Durex",
+      "pilotes": [
+        "houdi",
+        "anyme"
+      ]
+    }
   ],
   "pilotes": [
     {
@@ -19,6 +103,7 @@
       "pseudo": "Squeezie",
       "numero": 14,
       "ecurie": "netflix",
+      "image": "data/images/Squeezie.png",
       "classe": "Youtubeur",
       "technique": {
         "nom": "Keep Pushing",
@@ -31,6 +116,7 @@
       "pseudo": "Amine",
       "numero": 10,
       "ecurie": "netflix",
+      "image": "data/images/AMINE.png",
       "classe": "Youtubeur",
       "technique": {
         "nom": "Câlin Surprise",
@@ -43,6 +129,7 @@
       "pseudo": "Djilsi",
       "numero": 15,
       "ecurie": "lego-racing-team",
+      "image": "data/images/DJILSI.png",
       "classe": "Youtubeur",
       "technique": {
         "nom": "Petit Pont Turbo",
@@ -55,6 +142,7 @@
       "pseudo": "Maxime Biaggi",
       "numero": 97,
       "ecurie": "lego-racing-team",
+      "image": "data/images/MAXBIAGGI.png",
       "classe": "Streameur",
       "technique": {
         "nom": "Trajectoire Parfaite",
@@ -67,6 +155,7 @@
       "pseudo": "Maghla",
       "numero": 31,
       "ecurie": "sol-de-janeiro",
+      "image": "data/images/Magla.png",
       "classe": "Rappeur",
       "technique": {
         "nom": "Freestyle Assassin",
@@ -79,6 +168,7 @@
       "pseudo": "Lea Elui",
       "numero": 48,
       "ecurie": "sol-de-janeiro",
+      "image": "data/images/LEA.png",
       "classe": "Youtubeur",
       "technique": {
         "nom": "Pas de Danse Hypnotique",
@@ -91,6 +181,7 @@
       "pseudo": "Théodort",
       "numero": 23,
       "ecurie": "andros-be-nuts",
+      "image": "data/images/THEORDORT.png",
       "classe": "Youtubeur",
       "technique": {
         "nom": "Sale Coup Fourré",
@@ -103,6 +194,7 @@
       "pseudo": "Mastu",
       "numero": 56,
       "ecurie": "andros-be-nuts",
+      "image": "data/images/Mastu.png",
       "classe": "Streameur",
       "technique": {
         "nom": "Cri de Guerre",
@@ -115,6 +207,7 @@
       "pseudo": "MisterV",
       "numero": 38,
       "ecurie": "subway",
+      "image": "data/images/MisterV.png",
       "classe": "Rappeur",
       "technique": {
         "nom": "Ça Fait Plaisir",
@@ -127,6 +220,7 @@
       "pseudo": "PLK",
       "numero": 92,
       "ecurie": "subway",
+      "image": "data/images/PLK.png",
       "classe": "Rappeur",
       "technique": {
         "nom": "Bendo Rush",
@@ -139,6 +233,7 @@
       "pseudo": "SCH",
       "numero": 19,
       "ecurie": "samsung",
+      "image": "data/images/SCH.png",
       "classe": "Rappeur",
       "technique": {
         "nom": "C'est Ciao",
@@ -151,6 +246,7 @@
       "pseudo": "Billy",
       "numero": 99,
       "ecurie": "samsung",
+      "image": "data/images/Bili.png",
       "classe": "Streameur",
       "technique": {
         "nom": "Mode Deter",
@@ -163,6 +259,7 @@
       "pseudo": "Ana",
       "numero": 16,
       "ecurie": "alpine",
+      "image": "data/images/Ana.png",
       "classe": "Streameur",
       "technique": {
         "nom": "Focus Radar",
@@ -175,6 +272,7 @@
       "pseudo": "Kaatsup",
       "numero": 27,
       "ecurie": "alpine",
+      "image": "data/images/Kaatsup.png",
       "classe": "Streameur",
       "technique": {
         "nom": "Sauce Piquante",
@@ -187,6 +285,7 @@
       "pseudo": "Gotaga",
       "numero": 7,
       "ecurie": "lofi-girl-gentle-mates",
+      "image": "data/images/GOTAGA.png",
       "classe": "Streameur",
       "technique": {
         "nom": "Réflexes de Pro",
@@ -199,6 +298,7 @@
       "pseudo": "Nikof",
       "numero": 4,
       "ecurie": "lofi-girl-gentle-mates",
+      "image": "data/images/NIKOF.png",
       "classe": "Streameur",
       "technique": {
         "nom": "Build Instantané",
@@ -211,6 +311,7 @@
       "pseudo": "Baghera",
       "numero": 28,
       "ecurie": "erborian",
+      "image": "data/images/BAGHERA.png",
       "classe": "Streameur",
       "technique": {
         "nom": "Griffe Nocturne",
@@ -223,6 +324,7 @@
       "pseudo": "Cocottee",
       "numero": 2,
       "ecurie": "erborian",
+      "image": "data/images/Cocotte.png",
       "classe": "Streameur",
       "technique": {
         "nom": "Tabarnak Turbo",
@@ -235,6 +337,7 @@
       "pseudo": "Ander",
       "numero": 17,
       "ecurie": "cupra",
+      "image": "data/images/Ander.png",
       "classe": "Youtubeur",
       "technique": {
         "nom": "Olé Drift",
@@ -247,6 +350,7 @@
       "pseudo": "Karchez",
       "numero": 21,
       "ecurie": "cupra",
+      "image": "data/images/KARCHEZ.png",
       "classe": "Youtubeur",
       "technique": {
         "nom": "Ombre du Boss",
@@ -259,6 +363,7 @@
       "pseudo": "Ludwig",
       "numero": 42,
       "ecurie": "the-crew-motorfest",
+      "image": "data/images/Ludwig.png",
       "classe": "Streameur",
       "technique": {
         "nom": "Subathon Infini",
@@ -271,6 +376,7 @@
       "pseudo": "Michael Reeves",
       "numero": 51,
       "ecurie": "the-crew-motorfest",
+      "image": "data/images/Reeves.png",
       "classe": "Youtubeur",
       "technique": {
         "nom": "Robot Sabotage",
@@ -283,6 +389,7 @@
       "pseudo": "Houdi",
       "numero": 77,
       "ecurie": "durex",
+      "image": "data/images/HOUDI.png",
       "classe": "Youtubeur",
       "technique": {
         "nom": "Évasion à la Houdini",
@@ -295,6 +402,7 @@
       "pseudo": "Anyme",
       "numero": 3,
       "ecurie": "durex",
+      "image": "data/images/Anyme.png",
       "classe": "Streameur",
       "technique": {
         "nom": "Rage Clutch",
